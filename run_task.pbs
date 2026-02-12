@@ -1,0 +1,13 @@
+#!/bin/bash
+#PBS -q ai
+#PBS -N task1_vector_add
+#PBS -l select=1:ngpus=1
+#PBS -l walltime=00:30:00
+#PBS -j oe
+
+module load CUDA/12.1.1
+
+cd /home/users/ntu/c230179/Desktop/Assignment\ 1
+nvcc -o task1 "Task 1.cu"
+
+./task1
