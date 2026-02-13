@@ -13,7 +13,7 @@
 } while(0)
 
 #define N       (1ULL << 30)   // vector length 2^30 
-#define BLOCK_SZ 256           // single case: 256 threads per block 
+#define BLOCK_SZ 128           // Specify case here!
 
 // Kernel
 __global__ void vecAdd(const float *__restrict__ A,
