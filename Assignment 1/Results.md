@@ -49,7 +49,11 @@ All CUDA API calls are wrapped with the `CUDA_CHECK` macro (Week 2 style) so tha
 Tested block sizes **32, 64, 128, 256** (threads per block). Grid size (number of blocks) is determined at runtime: `gridSize = (N + BLOCK_SZ - 1) / BLOCK_SZ` with N = 2^30, so e.g. 32 → 33,554,432 blocks, 256 → 4,194,304 blocks.
 
 #### Task 3 — FLOPS for each run
-See results above. Typical: 32 → ~3.7–4.0e+10 FLOPS, ~28 ms; 64 → ~6.5–6.9e+10, ~16 ms; 128 → ~7.7–9.5e+10, ~12 ms; 256 → ~7.7–9.3e+10, ~13 ms. Best: 128 and 256 (excluding outliers).
+* 32 → ~3.7–4.0e+10 FLOPS, ~28 ms
+* 64 → ~6.5–6.9e+10, ~16 ms
+* 128 → ~7.7–9.5e+10, ~12 ms
+* 256 → ~7.7–9.3e+10, ~13 ms. 
+* Best: 128 and 256 (excluding outliers)
 
 ## Problem 2
 
@@ -99,8 +103,8 @@ Comparison: 1D FLOPS = 3.456e+10, 2D FLOPS = 1.073e+11
 #### Task 1 — Global thread index
 * For the 1D configuration, `tid = blockIdx.x * blockDim.x + threadIdx.x`
 * For the 2D configuration, there is no single “global linear index” in the same sense; the row and column of the matrix are:
-    * `i = blockIdx.y * blockDim.y + threadIdx.y`
-    * `j = blockIdx.x * blockDim.x + threadIdx.x`
+  * `i = blockIdx.y * blockDim.y + threadIdx.y`
+  * `j = blockIdx.x * blockDim.x + threadIdx.x`
 * The global identity of the thread is the pair `(i,j)`
 
 #### Task 2 — Mapping to matrix element (i, j)
@@ -140,7 +144,7 @@ For the 2D array, we also do a simple example. We have a 4×4 matrix (row-major;
 
 So in thread order, the indices used are 0, 1, 4, 5 (not consecutive). The first two threads (same row i=0) access 0, 1 (consecutive); the next two (row i=1) access 4, 5 (consecutive). So within each row of the block we get consecutive accesses, but the block as a whole does not. With larger 32×32 blocks, an entire row of 32 threads has consecutive `j`, so they access 32 consecutive indices — coalesced along that row. The toy 2×2 case shows why small 2D blocks can be non-coalesced; 32×32 recovers coalescing per row.
 
-So why does 2D still win even though a tiny 2D block is non-coalesced? In a toy 2×2 block, the first four threads (in CUDA order) access indices 0, 1, 4, 5 — not consecutive, so that would be non-coalesced. But we use 32×32 blocks. In a 32×32 block, the 32 threads with the same `threadIdx.y` and `threadIdx.x = 0,1,…,31` all share the same row `i` and have consecutive `j`. In row-major layout, that row is stored in consecutive memory, so those 32 threads access consecutive addresses. 
+So why does 2D still win even though a tiny 2D block is non-coalesced? In a toy 2×2 block, the first four threads (in CUDA order) access indices 0, 1, 4, 5 (not consecutive, so that would be non-coalesced). But we use 32×32 blocks. In a 32×32 block, the 32 threads with the same `threadIdx.y` and `threadIdx.x = 0,1,…,31` all share the same row `i` and have consecutive `j`. In row-major layout, that row is stored in consecutive memory, so those 32 threads access consecutive addresses. 
 
 So the fast 2D run is not “non-coalesced”; it gets coalescing too. It beats 1D because the 2D layout matches the matrix (better cache locality, no division/modulo to compute `i`, `j`), and warps align with rows (threadIdx.x is the fast dimension), so the hardware can use memory bandwidth more effectively. The “non-coalesced” pattern only appears in the small 2×2 example; at 32×32, 2D is coalesced and wins on top of that.
 
@@ -208,16 +212,16 @@ Measured with CUDA events
 FLOPS = 2·M·N·K / time_sec (each C element does K multiplies and K−1 adds)
 
 #### Task 4 — Three 2D block sizes
-Tested 8×8, 16×16, and 32×32
-Reported FLOPS: 
-* 8×8 ~1.23e+12
-* 16×16 ~2.35e+12
-* 32×32 ~3.04e+12
+* Tested 8×8, 16×16, and 32×32
+* Reported FLOPS: 
+  * 8×8 ~1.23e+12
+  * 16×16 ~2.35e+12
+  * 32×32 ~3.04e+12
 
 #### Task 5 — Performance comparison
 32×32 is clearly best (~2.5× faster than 8×8). Larger blocks give better occupancy (more warps per SM to hide memory latency) and align with the 2D access pattern for coalescing (e.g. consecutive j → consecutive reads along a row of A). 8×8 has only 64 threads per block, so lower occupancy and more blocks; 16×16 is in between. 32×32 is a common sweet spot for this naive matmul kernel before register/shared-memory limits bite.
 
-**Toy example (performance difference):** Consider a small 16×16 matrix so we can compare block shapes. Each thread computes one C(i,j) by reading row i of A and column j of B.
+To see why, we consider a small 16×16 matrix so we can compare block shapes. Each thread computes one C(i,j) by reading row i of A and column j of B.
 
 | Block size | Blocks (grid) | Threads per block | Threads in one row of block | Consecutive A reads per row |
 |------------|---------------|-------------------|-----------------------------|------------------------------|
@@ -225,4 +229,8 @@ Reported FLOPS:
 | 16×16      | 1×1 = 1       | 256               | 16                          | 16                           |
 | 32×32      | 1×1 = 1       | 1024              | 32                          | 32 (one long coalesced chunk)|
 
-With **8×8 blocks**, each row of the block has only 8 threads with consecutive j, so they issue one coalesced read of 8 elements of A. With **32×32 blocks**, 32 threads share a row and read 32 consecutive elements — a longer coalesced segment, so fewer transactions per row of A. Also, 32×32 has 1024 threads per block (many warps) vs 64 for 8×8, so **occupancy** is much higher: more warps per SM to hide memory latency. So 32×32 wins on both coalescing (longer contiguous reads) and occupancy (more threads per block), matching the observed FLOPS: 8×8 ~1.23e+12, 32×32 ~3.04e+12.
+With 8×8 blocks, each row of the block has only 8 threads with consecutive j, so they issue one coalesced read of 8 elements of A. With 32×32 blocks, 32 threads share a row and read 32 consecutive elements (a longer coalesced segment) so fewer transactions per row of A
+
+Also, 32×32 has 1024 threads per block (many warps) vs 64 for 8×8, so occupancy is much higher (more warps per SM to hide memory latency). This has NOT been verified, mind you
+
+So 32×32 wins on both coalescing (longer contiguous reads) and occupancy (more threads per block), matching the observed FLOPS
