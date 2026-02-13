@@ -8,6 +8,6 @@
 module load cuda/12.2.2
 
 cd /home/users/ntu/c230179/Desktop/SC4064/Assignment\ 1
-nvcc -o task2 "Task 2.cu"
+nvcc -o task2 "Task 2 Check.cu"
 
 ./task2

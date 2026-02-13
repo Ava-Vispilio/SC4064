@@ -27,3 +27,45 @@
 * Run 3: `Block size 256, grid size 4194304, time 13.415 ms, FLOPS 8.004e+10`
 * Run 4: `Block size 256, grid size 4194304, time 11.533 ms, FLOPS 9.310e+10`
 * Run 5: `Block size 256, grid size 4194304, time 13.824 ms, FLOPS 7.767e+10`
+
+## Task 2
+
+Run 1: 
+```
+1D config: grid 262144, block 256, time 2.019 ms, FLOPS 3.325e+10
+2D config: grid (256,256), block (32,32), time 0.629 ms, FLOPS 1.067e+11
+
+Comparison: 1D FLOPS = 3.325e+10, 2D FLOPS = 1.067e+11
+```
+
+Run 2:
+```
+1D config: grid 262144, block 256, time 1.895 ms, FLOPS 3.541e+10
+2D config: grid (256,256), block (32,32), time 0.630 ms, FLOPS 1.066e+11
+
+Comparison: 1D FLOPS = 3.541e+10, 2D FLOPS = 1.066e+11
+```
+
+Run 3:
+```
+1D config: grid 262144, block 256, time 1.849 ms, FLOPS 3.629e+10
+2D config: grid (256,256), block (32,32), time 0.632 ms, FLOPS 1.062e+11
+
+Comparison: 1D FLOPS = 3.629e+10, 2D FLOPS = 1.062e+11
+```
+
+Run 4:
+
+Run 5:
+
+## Task 3
+
+Run 1:
+
+Run 2:
+
+Run 3:
+
+Run 4:
+
+Run 5:
