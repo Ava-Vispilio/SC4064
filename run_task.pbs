@@ -1,5 +1,5 @@
 #!/bin/bash
-#PBS -N task1_vector_add
+#PBS -N task3_vector_mul
 #PBS -l select=1:ngpus=1
 #PBS -l walltime=00:30:00
 #PBS -q normal
