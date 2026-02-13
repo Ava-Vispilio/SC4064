@@ -1,18 +1,18 @@
 ## Task 1
 
 ### 32
-* Run 1: 
+* Run 1: `
 * Run 2:
 * Run 3:
 * Run 4:
 * Run 5:
 
 ### 64
-* Run 1:
-* Run 2:
-* Run 3:
-* Run 4:
-* Run 5:
+* Run 1: `Block size 64, grid size 16777216, time 15.674 ms, FLOPS 6.851e+10`
+* Run 2: `Block size 64, grid size 16777216, time 16.206 ms, FLOPS 6.625e+10`
+* Run 3: `Block size 64, grid size 16777216, time 18.020 ms, FLOPS 5.959e+10`
+* Run 4: `Block size 64, grid size 16777216, time 16.431 ms, FLOPS 6.535e+10`
+* Run 5: `Block size 64, grid size 16777216, time 15.697 ms, FLOPS 6.840e+10`
 
 ### 128
 * Run 1: `Block size 128, grid size 8388608, time 35.725 ms, FLOPS 3.006e+10`
