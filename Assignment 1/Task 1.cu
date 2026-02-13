@@ -78,13 +78,19 @@ int main(void)
     printf("Block size %d, grid size %d, time %.3f ms, FLOPS %.3e\n",
            BLOCK_SZ, gridSize, ms, flops);
 
+    // Destroy timing events       
     CUDA_CHECK(cudaEventDestroy(start));
     CUDA_CHECK(cudaEventDestroy(stop));
+    
+    // Free device memory
     CUDA_CHECK(cudaFree(d_A));
     CUDA_CHECK(cudaFree(d_B));
     CUDA_CHECK(cudaFree(d_C));
+    
+    // Free host memory
     free(h_A);
     free(h_B);
     free(h_C);
+    
     return 0;
 }

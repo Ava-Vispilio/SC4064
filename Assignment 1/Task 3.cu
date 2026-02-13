@@ -103,14 +103,19 @@ int main(void)
                bx, by, grid.x, grid.y, ms, flops);
     }
 
-    // Cleanup
+    // Destroy timing events    
     CUDA_CHECK(cudaEventDestroy(start));
     CUDA_CHECK(cudaEventDestroy(stop));
+    
+    // Free device memory
     CUDA_CHECK(cudaFree(d_A));
     CUDA_CHECK(cudaFree(d_B));
     CUDA_CHECK(cudaFree(d_C));
+    /
+    / Free host memory
     free(h_A);
     free(h_B);
     free(h_C);
+    
     return 0;
 }
