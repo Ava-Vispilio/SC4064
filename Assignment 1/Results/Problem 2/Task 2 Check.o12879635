@@ -1,0 +1,102 @@
+===== 1D grid, 1D blocks =====
+[1D] blockIdx.x=0 threadIdx.x=0 -> tid=0 (i=0,j=0) idx=0
+     A[idx]=1 loaded from A+0 (addr 23229752147968)
+     B[idx]=10 loaded from B+0 (addr 23229752148480)
+     C[idx]=A+B written to C+0 (addr 23229752148992)
+
+[1D] blockIdx.x=0 threadIdx.x=1 -> tid=1 (i=0,j=1) idx=1
+     A[idx]=2 loaded from A+1 (addr 23229752147972)
+     B[idx]=11 loaded from B+1 (addr 23229752148484)
+     C[idx]=A+B written to C+1 (addr 23229752148996)
+
+[1D] blockIdx.x=0 threadIdx.x=2 -> tid=2 (i=0,j=2) idx=2
+     A[idx]=3 loaded from A+2 (addr 23229752147976)
+     B[idx]=12 loaded from B+2 (addr 23229752148488)
+     C[idx]=A+B written to C+2 (addr 23229752149000)
+
+[1D] blockIdx.x=0 threadIdx.x=3 -> tid=3 (i=0,j=3) idx=3
+     A[idx]=4 loaded from A+3 (addr 23229752147980)
+     B[idx]=13 loaded from B+3 (addr 23229752148492)
+     C[idx]=A+B written to C+3 (addr 23229752149004)
+
+[1D] blockIdx.x=0 threadIdx.x=4 -> tid=4 (i=1,j=0) idx=4
+     A[idx]=5 loaded from A+4 (addr 23229752147984)
+     B[idx]=14 loaded from B+4 (addr 23229752148496)
+     C[idx]=A+B written to C+4 (addr 23229752149008)
+
+[1D] blockIdx.x=0 threadIdx.x=5 -> tid=5 (i=1,j=1) idx=5
+     A[idx]=6 loaded from A+5 (addr 23229752147988)
+     B[idx]=15 loaded from B+5 (addr 23229752148500)
+     C[idx]=A+B written to C+5 (addr 23229752149012)
+
+[1D] blockIdx.x=0 threadIdx.x=6 -> tid=6 (i=1,j=2) idx=6
+     A[idx]=7 loaded from A+6 (addr 23229752147992)
+     B[idx]=16 loaded from B+6 (addr 23229752148504)
+     C[idx]=A+B written to C+6 (addr 23229752149016)
+
+[1D] blockIdx.x=0 threadIdx.x=7 -> tid=7 (i=1,j=3) idx=7
+     A[idx]=8 loaded from A+7 (addr 23229752147996)
+     B[idx]=17 loaded from B+7 (addr 23229752148508)
+     C[idx]=A+B written to C+7 (addr 23229752149020)
+
+[1D] blockIdx.x=0 threadIdx.x=8 -> tid=8 (i=2,j=0) idx=8
+     A[idx]=9 loaded from A+8 (addr 23229752148000)
+     B[idx]=18 loaded from B+8 (addr 23229752148512)
+     C[idx]=A+B written to C+8 (addr 23229752149024)
+
+[1D] blockIdx.x=0 threadIdx.x=9 -> tid=9 (i=2,j=1) idx=9
+     A[idx]=10 loaded from A+9 (addr 23229752148004)
+     B[idx]=19 loaded from B+9 (addr 23229752148516)
+     C[idx]=A+B written to C+9 (addr 23229752149028)
+
+[1D] blockIdx.x=0 threadIdx.x=10 -> tid=10 (i=2,j=2) idx=10
+     A[idx]=11 loaded from A+10 (addr 23229752148008)
+     B[idx]=20 loaded from B+10 (addr 23229752148520)
+     C[idx]=A+B written to C+10 (addr 23229752149032)
+
+[1D] blockIdx.x=0 threadIdx.x=11 -> tid=11 (i=2,j=3) idx=11
+     A[idx]=12 loaded from A+11 (addr 23229752148012)
+     B[idx]=21 loaded from B+11 (addr 23229752148524)
+     C[idx]=A+B written to C+11 (addr 23229752149036)
+
+[1D] blockIdx.x=0 threadIdx.x=12 -> tid=12 (i=3,j=0) idx=12
+     A[idx]=13 loaded from A+12 (addr 23229752148016)
+     B[idx]=22 loaded from B+12 (addr 23229752148528)
+     C[idx]=A+B written to C+12 (addr 23229752149040)
+
+[1D] blockIdx.x=0 threadIdx.x=13 -> tid=13 (i=3,j=1) idx=13
+     A[idx]=14 loaded from A+13 (addr 23229752148020)
+     B[idx]=23 loaded from B+13 (addr 23229752148532)
+     C[idx]=A+B written to C+13 (addr 23229752149044)
+
+[1D] blockIdx.x=0 threadIdx.x=14 -> tid=14 (i=3,j=2) idx=14
+     A[idx]=15 loaded from A+14 (addr 23229752148024)
+     B[idx]=24 loaded from B+14 (addr 23229752148536)
+     C[idx]=A+B written to C+14 (addr 23229752149048)
+
+[1D] blockIdx.x=0 threadIdx.x=15 -> tid=15 (i=3,j=3) idx=15
+     A[idx]=16 loaded from A+15 (addr 23229752148028)
+     B[idx]=25 loaded from B+15 (addr 23229752148540)
+     C[idx]=A+B written to C+15 (addr 23229752149052)
+
+===== 2D grid, 2D blocks (first block only) =====
+[2D] blockIdx=(0,0) threadIdx=(0,0) -> (i=0,j=0) idx=0
+     A[idx]=1 loaded from A+0 (addr 23229752147968)
+     B[idx]=10 loaded from B+0 (addr 23229752148480)
+     C[idx]=A+B written to C+0 (addr 23229752148992)
+
+[2D] blockIdx=(0,0) threadIdx=(1,0) -> (i=0,j=1) idx=1
+     A[idx]=2 loaded from A+1 (addr 23229752147972)
+     B[idx]=11 loaded from B+1 (addr 23229752148484)
+     C[idx]=A+B written to C+1 (addr 23229752148996)
+
+[2D] blockIdx=(0,0) threadIdx=(0,1) -> (i=1,j=0) idx=4
+     A[idx]=5 loaded from A+4 (addr 23229752147984)
+     B[idx]=14 loaded from B+4 (addr 23229752148496)
+     C[idx]=A+B written to C+4 (addr 23229752149008)
+
+[2D] blockIdx=(0,0) threadIdx=(1,1) -> (i=1,j=1) idx=5
+     A[idx]=6 loaded from A+5 (addr 23229752147988)
+     B[idx]=15 loaded from B+5 (addr 23229752148500)
+     C[idx]=A+B written to C+5 (addr 23229752149012)
+
