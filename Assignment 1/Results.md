@@ -55,8 +55,20 @@ Comparison: 1D FLOPS = 3.629e+10, 2D FLOPS = 1.062e+11
 ```
 
 Run 4:
+```
+1D config: grid 262144, block 256, time 1.942 ms, FLOPS 3.456e+10
+2D config: grid (256,256), block (32,32), time 0.626 ms, FLOPS 1.073e+11
+
+Comparison: 1D FLOPS = 3.456e+10, 2D FLOPS = 1.073e+11
+```
 
 Run 5:
+```
+1D config: grid 262144, block 256, time 1.942 ms, FLOPS 3.456e+10
+2D config: grid (256,256), block (32,32), time 0.626 ms, FLOPS 1.073e+11
+
+Comparison: 1D FLOPS = 3.456e+10, 2D FLOPS = 1.073e+11
+```
 
 ## Task 3
 

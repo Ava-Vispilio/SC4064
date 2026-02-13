@@ -111,8 +111,8 @@ int main(void)
     CUDA_CHECK(cudaFree(d_A));
     CUDA_CHECK(cudaFree(d_B));
     CUDA_CHECK(cudaFree(d_C));
-    /
-    / Free host memory
+    
+    // Free host memory
     free(h_A);
     free(h_B);
     free(h_C);
