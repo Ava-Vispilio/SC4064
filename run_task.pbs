@@ -1,8 +1,8 @@
 #!/bin/bash
-#PBS -q ai
 #PBS -N task1_vector_add
 #PBS -l select=1:ngpus=1
 #PBS -l walltime=00:30:00
+#PBS -q normal
 #PBS -j oe
 
 module load CUDA/12.1.1
