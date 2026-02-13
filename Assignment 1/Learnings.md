@@ -15,6 +15,7 @@ Most files need this to print errors:
     } \
 } while(0)
 ```
+Read errors using: `cat $(ls -t *.o* 2>/dev/null | head -1)`
 
 ---
 
