@@ -5,7 +5,7 @@
 #PBS -q normal
 #PBS -j oe
 
-module load CUDA/12.2.2
+module load cuda/12.2.2
 
 cd /home/users/ntu/c230179/Desktop/Assignment\ 1
 nvcc -o task1 "Task 1.cu"
