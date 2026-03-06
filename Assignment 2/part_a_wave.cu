@@ -25,6 +25,11 @@ constexpr double kDx = 0.01;
 constexpr double kDy = 0.01;
 constexpr double kDt = 0.005;
 constexpr double kBytesPerUpdate = 48.0;
+constexpr int kDefaultSteps = 1000;
+constexpr bool kRunGlobal = true;
+constexpr bool kRunShared = true;
+constexpr bool kBenchmarkBlocks = true;
+constexpr double kDomainLengths[] = {1.0, 2.0, 4.0, 8.0};
 
 enum class KernelKind {
     kGlobal,
@@ -59,65 +64,12 @@ struct RunResult {
     std::vector<double> final_field;
 };
 
-void print_usage(const char *program_name) {
-    printf("Usage: %s [options]\n", program_name);
-    printf("Options:\n");
-    printf("  --length <L>             Domain length (default 1.0)\n");
-    printf("  --steps <N>              Number of timesteps (default 1000)\n");
-    printf("  --block <Bx>x<By>        Block size for single-config runs (default 16x16)\n");
-    printf("  --kernel <global|shared|both>  Kernel selection (default both)\n");
-    printf("  --benchmark-blocks <0|1> Benchmark 8x8, 16x16, 32x8 (default 1)\n");
-    printf("  --help                   Show this message\n");
-}
-
-bool parse_block_size(const char *arg, int *block_x, int *block_y) {
-    return std::sscanf(arg, "%dx%d", block_x, block_y) == 2 && *block_x > 0 && *block_y > 0;
-}
-
-Options parse_args(int argc, char **argv) {
+Options default_options() {
     Options options;
-
-    for (int i = 1; i < argc; ++i) {
-        if (std::strcmp(argv[i], "--length") == 0 && i + 1 < argc) {
-            options.domain_length = std::atof(argv[++i]);
-        } else if (std::strcmp(argv[i], "--steps") == 0 && i + 1 < argc) {
-            options.steps = std::atoi(argv[++i]);
-        } else if (std::strcmp(argv[i], "--block") == 0 && i + 1 < argc) {
-            if (!parse_block_size(argv[++i], &options.block_x, &options.block_y)) {
-                fprintf(stderr, "Invalid block size. Use the form BxXBy, for example 16x16.\n");
-                std::exit(EXIT_FAILURE);
-            }
-        } else if (std::strcmp(argv[i], "--kernel") == 0 && i + 1 < argc) {
-            const char *mode = argv[++i];
-            if (std::strcmp(mode, "global") == 0) {
-                options.run_global = true;
-                options.run_shared = false;
-            } else if (std::strcmp(mode, "shared") == 0) {
-                options.run_global = false;
-                options.run_shared = true;
-            } else if (std::strcmp(mode, "both") == 0) {
-                options.run_global = true;
-                options.run_shared = true;
-            } else {
-                fprintf(stderr, "Invalid kernel mode '%s'. Use global, shared, or both.\n", mode);
-                std::exit(EXIT_FAILURE);
-            }
-        } else if (std::strcmp(argv[i], "--benchmark-blocks") == 0 && i + 1 < argc) {
-            options.benchmark_blocks = std::atoi(argv[++i]) != 0;
-        } else if (std::strcmp(argv[i], "--help") == 0) {
-            print_usage(argv[0]);
-            std::exit(EXIT_SUCCESS);
-        } else {
-            fprintf(stderr, "Unknown or incomplete argument: %s\n", argv[i]);
-            print_usage(argv[0]);
-            std::exit(EXIT_FAILURE);
-        }
-    }
-
-    if (options.domain_length <= 0.0) {
-        fprintf(stderr, "Domain length must be positive.\n");
-        std::exit(EXIT_FAILURE);
-    }
+    options.steps = kDefaultSteps;
+    options.run_global = kRunGlobal;
+    options.run_shared = kRunShared;
+    options.benchmark_blocks = kBenchmarkBlocks;
     if (options.steps <= 0) {
         fprintf(stderr, "Number of steps must be positive.\n");
         std::exit(EXIT_FAILURE);
@@ -412,8 +364,8 @@ void print_result_line(const RunResult &result, double domain_length) {
 
 }  // namespace
 
-int main(int argc, char **argv) {
-    const Options options = parse_args(argc, argv);
+int main(void) {
+    const Options options = default_options();
 
     CUDA_CHECK(cudaSetDevice(0));
 
@@ -424,12 +376,6 @@ int main(int argc, char **argv) {
 
     const double lambda = kWaveSpeed * kDt / kDx;
     const double lambda2 = (kWaveSpeed * kWaveSpeed * kDt * kDt) / (kDx * kDy);
-    const int nx = grid_points_from_length(options.domain_length, kDx);
-    const int ny = grid_points_from_length(options.domain_length, kDy);
-
-    std::vector<double> initial_prev;
-    std::vector<double> initial_curr;
-    initialize_fields(&initial_prev, &initial_curr, nx, ny, kDx, kDy, lambda2);
 
     printf("DEVICE name=\"%s\" sm_count=%d warp_size=%d max_threads_per_sm=%d shared_mem_per_sm=%zu\n",
            device_prop.name,
@@ -437,17 +383,11 @@ int main(int argc, char **argv) {
            device_prop.warpSize,
            device_prop.maxThreadsPerMultiProcessor,
            device_prop.sharedMemPerMultiprocessor);
-    printf("SETUP length=%.2f dx=%.5f dy=%.5f dt=%.5f c=%.2f lambda=%.6f lambda2=%.6f nx=%d ny=%d steps=%d\n",
-           options.domain_length,
-           kDx,
-           kDy,
-           kDt,
-           kWaveSpeed,
-           lambda,
-           lambda2,
-           nx,
-           ny,
-           options.steps);
+    printf("CONFIG steps=%d run_global=%d run_shared=%d benchmark_blocks=%d lengths=1.00,2.00,4.00,8.00 blocks=8x8,16x16,32x8\n",
+           options.steps,
+           options.run_global ? 1 : 0,
+           options.run_shared ? 1 : 0,
+           options.benchmark_blocks ? 1 : 0);
 
     std::vector<dim3> block_configs;
     if (options.benchmark_blocks) {
@@ -467,25 +407,45 @@ int main(int argc, char **argv) {
         }
     }
 
-    for (const dim3 &block : block_configs) {
-        RunResult global_result;
-        bool have_global_baseline = false;
+    for (double domain_length : kDomainLengths) {
+        const int nx = grid_points_from_length(domain_length, kDx);
+        const int ny = grid_points_from_length(domain_length, kDy);
+        std::vector<double> initial_prev;
+        std::vector<double> initial_curr;
+        initialize_fields(&initial_prev, &initial_curr, nx, ny, kDx, kDy, lambda2);
 
-        if (options.run_global) {
-            global_result = run_configuration(
-                KernelKind::kGlobal, block, nx, ny, options.steps, lambda2, initial_prev, initial_curr, device_prop);
-            global_result.max_error = 0.0;
-            print_result_line(global_result, options.domain_length);
-            have_global_baseline = true;
-        }
+        printf("SETUP length=%.2f dx=%.5f dy=%.5f dt=%.5f c=%.2f lambda=%.6f lambda2=%.6f nx=%d ny=%d steps=%d\n",
+               domain_length,
+               kDx,
+               kDy,
+               kDt,
+               kWaveSpeed,
+               lambda,
+               lambda2,
+               nx,
+               ny,
+               options.steps);
 
-        if (options.run_shared) {
-            RunResult shared_result = run_configuration(
-                KernelKind::kShared, block, nx, ny, options.steps, lambda2, initial_prev, initial_curr, device_prop);
-            if (have_global_baseline) {
-                shared_result.max_error = compute_max_abs_diff(shared_result.final_field, global_result.final_field);
+        for (const dim3 &block : block_configs) {
+            RunResult global_result;
+            bool have_global_baseline = false;
+
+            if (options.run_global) {
+                global_result = run_configuration(
+                    KernelKind::kGlobal, block, nx, ny, options.steps, lambda2, initial_prev, initial_curr, device_prop);
+                global_result.max_error = 0.0;
+                print_result_line(global_result, domain_length);
+                have_global_baseline = true;
             }
-            print_result_line(shared_result, options.domain_length);
+
+            if (options.run_shared) {
+                RunResult shared_result = run_configuration(
+                    KernelKind::kShared, block, nx, ny, options.steps, lambda2, initial_prev, initial_curr, device_prop);
+                if (have_global_baseline) {
+                    shared_result.max_error = compute_max_abs_diff(shared_result.final_field, global_result.final_field);
+                }
+                print_result_line(shared_result, domain_length);
+            }
         }
     }
 
