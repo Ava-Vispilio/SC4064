@@ -1,0 +1,691 @@
+nvcc -O3 -lineinfo -std=c++17 -o part_b_wave part_b_wave.cu -lcusparse -lcublas
+part_b_wave.cu(184): warning #177-D: function "<unnamed>::compute_max_abs_diff" was declared but never referenced
+  double compute_max_abs_diff(const std::vector<double> &lhs, const std::vector<double> &rhs) {
+         ^
+
+Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
+
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:434:47: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreateCsric02Info(csric02Info_t* info);
+                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:438:46: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyCsric02Info(csric02Info_t info);
+                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:442:47: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreateBsric02Info(bsric02Info_t* info);
+                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:446:46: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyBsric02Info(bsric02Info_t info);
+                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:450:49: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreateCsrilu02Info(csrilu02Info_t* info);
+                                                 ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:454:48: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyCsrilu02Info(csrilu02Info_t info);
+                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:458:49: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreateBsrilu02Info(bsrilu02Info_t* info);
+                                                 ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:462:48: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyBsrilu02Info(bsrilu02Info_t info);
+                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:466:45: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreateBsrsv2Info(bsrsv2Info_t* info);
+                                             ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:470:44: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyBsrsv2Info(bsrsv2Info_t info);
+                                            ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:474:45: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreateBsrsm2Info(bsrsm2Info_t* info);
+                                             ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:478:44: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyBsrsm2Info(bsrsm2Info_t info);
+                                            ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:482:49: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreateCsru2csrInfo(csru2csrInfo_t* info);
+                                                 ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:486:48: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyCsru2csrInfo(csru2csrInfo_t info);
+                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:490:51: warning: ‘cusparseColorInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreateColorInfo(cusparseColorInfo_t* info);
+                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:494:50: warning: ‘cusparseColorInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyColorInfo(cusparseColorInfo_t info);
+                                                  ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:498:43: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCreatePruneInfo(pruneInfo_t* info);
+                                           ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:502:42: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDestroyPruneInfo(pruneInfo_t info);
+                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:758:85: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseXbsrsv2_zeroPivot(cusparseHandle_t handle,
+                                                                                     ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:764:298: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrsv2_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:779:299: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrsv2_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                           ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:794:302: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrsv2_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:809:308: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrsv2_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:824:298: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrsv2_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:839:299: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrsv2_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                           ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:854:302: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrsv2_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:869:308: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrsv2_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:884:322: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrsv2_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                  ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:884:322: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:900:323: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrsv2_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:900:323: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:916:326: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrsv2_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:916:326: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:932:332: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrsv2_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                            ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:932:332: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:948:368: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrsv2_solve(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:948:368: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:967:372: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrsv2_solve(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:967:372: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:986:384: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrsv2_solve(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:986:384: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1005:408: warning: ‘bsrsv2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrsv2_solve(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1005:408: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1112:85: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseXbsrsm2_zeroPivot(cusparseHandle_t handle,
+                                                                                     ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1118:332: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrsm2_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                            ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1135:333: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrsm2_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                             ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1152:336: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrsm2_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1169:342: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrsm2_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1186:330: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrsm2_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1203:331: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrsm2_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                           ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1220:334: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrsm2_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1237:340: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrsm2_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1254:356: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrsm2_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1254:356: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1272:357: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrsm2_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                     ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1272:357: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1290:360: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrsm2_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1290:360: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1308:366: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrsm2_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1308:366: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1326:420: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrsm2_solve(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1326:420: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1349:424: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrsm2_solve(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1349:424: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1372:436: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrsm2_solve(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1372:436: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1395:460: warning: ‘bsrsm2Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrsm2_solve(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                            ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1395:460: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1422:127: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsrilu02_numericBoost(cusparseHandle_t handle,
+                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1430:128: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsrilu02_numericBoost(cusparseHandle_t handle,
+                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1438:131: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsrilu02_numericBoost(cusparseHandle_t handle,
+                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1446:137: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsrilu02_numericBoost(cusparseHandle_t handle,
+                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1454:89: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseXcsrilu02_zeroPivot(cusparseHandle_t handle,
+                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1460:232: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsrilu02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1472:233: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsrilu02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1484:236: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsrilu02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                            ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1496:242: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsrilu02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                  ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1508:228: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsrilu02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1520:229: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsrilu02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                     ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1532:232: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsrilu02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1544:238: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsrilu02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1556:256: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsrilu02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1556:256: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1569:257: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsrilu02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                 ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1569:257: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1582:260: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsrilu02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1582:260: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1595:266: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsrilu02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1595:266: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1608:246: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsrilu02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1608:246: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1621:247: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsrilu02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1621:247: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1634:250: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsrilu02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1634:250: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1647:256: warning: ‘csrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsrilu02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1647:256: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1660:127: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrilu02_numericBoost(cusparseHandle_t handle,
+                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1668:128: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrilu02_numericBoost(cusparseHandle_t handle,
+                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1676:131: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrilu02_numericBoost(cusparseHandle_t handle,
+                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1684:137: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrilu02_numericBoost(cusparseHandle_t handle,
+                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1692:89: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseXbsrilu02_zeroPivot(cusparseHandle_t handle,
+                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1698:271: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrilu02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1712:272: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrilu02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1726:275: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrilu02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1740:281: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrilu02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1754:271: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrilu02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1768:272: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrilu02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1782:275: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrilu02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1796:281: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrilu02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1810:289: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrilu02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                 ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1810:289: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1825:290: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrilu02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                  ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1825:290: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1840:293: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrilu02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                     ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1840:293: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1855:299: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrilu02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                           ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1855:299: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1870:280: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsrilu02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1870:280: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1885:281: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsrilu02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1885:281: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1900:284: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsrilu02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                            ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1900:284: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1915:290: warning: ‘bsrilu02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsrilu02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                  ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1915:290: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1930:87: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseXcsric02_zeroPivot(cusparseHandle_t handle,
+                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1936:230: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsric02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1948:231: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsric02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1960:234: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsric02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1972:240: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsric02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1984:226: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsric02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                  ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:1996:227: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsric02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2008:230: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsric02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2020:236: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsric02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                            ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2032:254: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsric02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2032:254: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2045:255: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsric02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2045:255: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2058:258: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsric02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                  ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2058:258: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2071:264: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsric02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2071:264: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2084:244: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsric02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2084:244: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2097:245: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsric02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                     ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2097:245: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2110:248: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsric02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2110:248: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2123:254: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsric02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2123:254: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2136:87: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseXbsric02_zeroPivot(cusparseHandle_t handle,
+                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2142:269: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsric02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                             ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2156:270: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsric02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2170:273: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsric02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                 ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2184:279: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsric02_bufferSize(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2198:269: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsric02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                             ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2212:270: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsric02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2226:273: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsric02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                 ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2240:279: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsric02_bufferSizeExt(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2254:298: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsric02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2254:298: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2269:299: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsric02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                           ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2269:299: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2284:302: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsric02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2284:302: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2299:308: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsric02_analysis(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2299:308: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2314:278: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSbsric02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2314:278: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2329:279: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDbsric02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2329:279: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2344:282: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCbsric02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2344:282: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2360:288: warning: ‘bsric02Info_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZbsric02(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:2360:288: warning: ‘cusparseSolvePolicy_t’ is deprecated [-Wdeprecated-declarations]
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:318:6: note: declared here
+ typedef enum {
+      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:3032:292: warning: ‘cusparseColorInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsrcolor(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                    ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:3047:294: warning: ‘cusparseColorInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsrcolor(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:3062:296: warning: ‘cusparseColorInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsrcolor(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:3077:303: warning: ‘cusparseColorInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsrcolor(cusparseHandle_t          handle,
+                                                                                                                                                                                                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4135:185: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsru2csr_bufferSizeExt(cusparseHandle_t handle,
+                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4147:186: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsru2csr_bufferSizeExt(cusparseHandle_t handle,
+                                                                                                                                                                                          ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4159:189: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsru2csr_bufferSizeExt(cusparseHandle_t handle,
+                                                                                                                                                                                             ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4171:195: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsru2csr_bufferSizeExt(cusparseHandle_t handle,
+                                                                                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4183:191: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsru2csr(cusparseHandle_t         handle,
+                                                                                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4196:192: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsru2csr(cusparseHandle_t         handle,
+                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4209:195: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsru2csr(cusparseHandle_t         handle,
+                                                                                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4222:201: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsru2csr(cusparseHandle_t         handle,
+                                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4235:191: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseScsr2csru(cusparseHandle_t         handle,
+                                                                                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4248:192: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDcsr2csru(cusparseHandle_t         handle,
+                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4261:195: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseCcsr2csru(cusparseHandle_t         handle,
+                                                                                                                                                                                                   ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4274:201: warning: ‘csru2csrInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseZcsr2csru(cusparseHandle_t         handle,
+                                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4580:303: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseHpruneDense2csrByPercentage_bufferSizeExt(
+                                                                                                                                                                                                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4598:301: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSpruneDense2csrByPercentage_bufferSizeExt(
+                                                                                                                                                                                                                                                                                                             ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4614:303: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDpruneDense2csrByPercentage_bufferSizeExt(
+                                                                                                                                                                                                                                                                                                               ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4632:233: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseHpruneDense2csrNnzByPercentage(
+                                                                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4648:232: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSpruneDense2csrNnzByPercentage(
+                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4663:233: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDpruneDense2csrNnzByPercentage(
+                                                                                                                                                                                                                                         ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4680:264: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseHpruneDense2csrByPercentage(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4697:262: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSpruneDense2csrByPercentage(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4712:264: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDpruneDense2csrByPercentage(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                        ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4729:407: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseHpruneCsr2csrByPercentage_bufferSizeExt(
+                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4750:405: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSpruneCsr2csrByPercentage_bufferSizeExt(
+                                                                                                                                                                                                                                                                                                                                                                                                                     ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4769:407: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDpruneCsr2csrByPercentage_bufferSizeExt(
+                                                                                                                                                                                                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4790:343: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseHpruneCsr2csrNnzByPercentage(
+                                                                                                                                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4810:342: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSpruneCsr2csrNnzByPercentage(
+                                                                                                                                                                                                                                                                                                                                                      ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4828:343: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDpruneCsr2csrNnzByPercentage(
+                                                                                                                                                                                                                                                                                                                                                       ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4848:368: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseHpruneCsr2csrByPercentage(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4868:366: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseSpruneCsr2csrByPercentage(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                              ^
+/app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4886:368: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
+ cusparseDpruneCsr2csrByPercentage(cusparseHandle_t         handle,
+                                                                                                                                                                                                                                                                                                                                                                                ^
+/opt/cray/pe/cce/13.0.2/binutils/x86_64/x86_64-pc-linux-gnu/bin/ld: /var/tmp/pbs.13077062.pbs101/tmpxft_003bf4dd_00000000-11_part_b_wave.o: in function `(anonymous namespace)::write_snapshot_csv(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double, int, int, int, std::vector<double, std::allocator<double> > const&)':
+tmpxft_003bf4dd_00000000-6_part_b_wave.cudafe1.cpp:(.text+0x19c0): undefined reference to `std::filesystem::__cxx11::path::_M_split_cmpts()'
+/opt/cray/pe/cce/13.0.2/binutils/x86_64/x86_64-pc-linux-gnu/bin/ld: tmpxft_003bf4dd_00000000-6_part_b_wave.cudafe1.cpp:(.text+0x19cd): undefined reference to `std::filesystem::create_directories(std::filesystem::__cxx11::path const&)'
+collect2: error: ld returned 1 exit status
+make: *** [Makefile:12: part_b] Error 1
+/var/spool/pbs/mom_priv/jobs/13077062.pbs101.SC: line 13: ./part_b_wave: No such file or directory

@@ -6,14 +6,16 @@
 #include <chrono>
 #include <cmath>
 #include <cstdint>
+#include <cerrno>
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
-#include <filesystem>
 #include <fstream>
 #include <limits>
 #include <new>
 #include <string>
+#include <sys/stat.h>
+#include <sys/types.h>
 #include <vector>
 
 #define CUDA_CHECK(call) do { \
@@ -181,7 +183,7 @@ double compute_checksum(const std::vector<double> &field) {
     return checksum;
 }
 
-double compute_max_abs_diff(const std::vector<double> &lhs, const std::vector<double> &rhs) {
+[[maybe_unused]] double compute_max_abs_diff(const std::vector<double> &lhs, const std::vector<double> &rhs) {
     if (lhs.size() != rhs.size()) {
         return std::numeric_limits<double>::infinity();
     }
@@ -191,6 +193,37 @@ double compute_max_abs_diff(const std::vector<double> &lhs, const std::vector<do
         max_diff = std::max(max_diff, std::fabs(lhs[i] - rhs[i]));
     }
     return max_diff;
+}
+
+void ensure_directory_exists(const std::string &path) {
+    if (path.empty()) {
+        return;
+    }
+
+    std::string partial;
+    partial.reserve(path.size());
+    for (size_t i = 0; i < path.size(); ++i) {
+        const char ch = path[i];
+        partial.push_back(ch);
+
+        const bool at_separator = (ch == '/');
+        const bool at_end = (i + 1 == path.size());
+        if (!at_separator && !at_end) {
+            continue;
+        }
+
+        while (partial.size() > 1 && partial.back() == '/') {
+            partial.pop_back();
+        }
+        if (partial.empty()) {
+            continue;
+        }
+
+        if (mkdir(partial.c_str(), 0755) != 0 && errno != EEXIST) {
+            fprintf(stderr, "Failed to create directory '%s': %s\n", partial.c_str(), std::strerror(errno));
+            std::exit(EXIT_FAILURE);
+        }
+    }
 }
 
 std::vector<int> build_snapshot_steps(int steps) {
@@ -207,7 +240,7 @@ void write_snapshot_csv(const std::string &snapshot_dir,
                         int ny,
                         int step,
                         const std::vector<double> &field) {
-    std::filesystem::create_directories(snapshot_dir);
+    ensure_directory_exists(snapshot_dir);
     const std::string filename = snapshot_dir + "/" + backend_label + "_L" + format_length_token(domain_length) +
                                  "_step" + std::to_string(step) + ".csv";
     std::ofstream out(filename);
