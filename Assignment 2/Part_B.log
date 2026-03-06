@@ -1,10 +1,4 @@
 nvcc -O3 -lineinfo -std=c++17 -o part_b_wave part_b_wave.cu -lcusparse -lcublas
-part_b_wave.cu(184): warning #177-D: function "<unnamed>::compute_max_abs_diff" was declared but never referenced
-  double compute_max_abs_diff(const std::vector<double> &lhs, const std::vector<double> &rhs) {
-         ^
-
-Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
-
 /app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:434:47: warning: ‘csric02Info_t’ is deprecated [-Wdeprecated-declarations]
  cusparseCreateCsric02Info(csric02Info_t* info);
                                                ^
@@ -683,9 +677,18 @@ Remark: The warnings can be suppressed with "-diag-suppress <warning-number>"
 /app/apps/cuda/12.2.2/bin/../targets/x86_64-linux/include/cusparse.h:4886:368: warning: ‘pruneInfo_t’ is deprecated [-Wdeprecated-declarations]
  cusparseDpruneCsr2csrByPercentage(cusparseHandle_t         handle,
                                                                                                                                                                                                                                                                                                                                                                                 ^
-/opt/cray/pe/cce/13.0.2/binutils/x86_64/x86_64-pc-linux-gnu/bin/ld: /var/tmp/pbs.13077062.pbs101/tmpxft_003bf4dd_00000000-11_part_b_wave.o: in function `(anonymous namespace)::write_snapshot_csv(std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, std::__cxx11::basic_string<char, std::char_traits<char>, std::allocator<char> > const&, double, int, int, int, std::vector<double, std::allocator<double> > const&)':
-tmpxft_003bf4dd_00000000-6_part_b_wave.cudafe1.cpp:(.text+0x19c0): undefined reference to `std::filesystem::__cxx11::path::_M_split_cmpts()'
-/opt/cray/pe/cce/13.0.2/binutils/x86_64/x86_64-pc-linux-gnu/bin/ld: tmpxft_003bf4dd_00000000-6_part_b_wave.cudafe1.cpp:(.text+0x19cd): undefined reference to `std::filesystem::create_directories(std::filesystem::__cxx11::path const&)'
-collect2: error: ld returned 1 exit status
-make: *** [Makefile:12: part_b] Error 1
-/var/spool/pbs/mom_priv/jobs/13077062.pbs101.SC: line 13: ./part_b_wave: No such file or directory
+DEVICE name="NVIDIA A100-SXM4-40GB" sm_count=108 warp_size=32 max_threads_per_sm=2048 shared_mem_per_sm=167936 total_global_mem=42474471424
+CONFIG steps=1000 run_cusparse=1 run_cublas=1 export_snapshots=0 dense_max_gb=20.00
+MEASURE bytes_per_update=48 update_block=32x8
+SETUP backend=B1_cusparse length=1.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=101 ny=101 steps=1000
+RESULT backend=B1_cusparse length=1.00 nx=101 ny=101 steps=1000 gpu_ms_total=976.400024 gpu_ms_step=0.976400 library_ms_total=963.261658 library_ms_step=0.963262 sim_ms_total=3845.249987 bandwidth_GBps=0.481819 update_occupancy_pct=100.00 active_blocks_per_sm=8 checksum=-3.932121435635e+03 max_error=-1.000000000000e+00 note=none
+SETUP backend=B1_cusparse length=2.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=201 ny=201 steps=1000
+RESULT backend=B1_cusparse length=2.00 nx=201 ny=201 steps=1000 gpu_ms_total=31.508352 gpu_ms_step=0.031508 library_ms_total=18.082394 library_ms_step=0.018082 sim_ms_total=32.434104 bandwidth_GBps=60.328385 update_occupancy_pct=100.00 active_blocks_per_sm=8 checksum=-5.925367726860e-12 max_error=-1.000000000000e+00 note=none
+SETUP backend=B1_cusparse length=4.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=401 ny=401 steps=1000
+RESULT backend=B1_cusparse length=4.00 nx=401 ny=401 steps=1000 gpu_ms_total=39.916512 gpu_ms_step=0.039917 library_ms_total=25.405050 library_ms_step=0.025405 sim_ms_total=41.961550 bandwidth_GBps=191.440777 update_occupancy_pct=100.00 active_blocks_per_sm=8 checksum=9.244842088044e-12 max_error=-1.000000000000e+00 note=none
+SETUP backend=B1_cusparse length=8.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=801 ny=801 steps=1000
+RESULT backend=B1_cusparse length=8.00 nx=801 ny=801 steps=1000 gpu_ms_total=87.307297 gpu_ms_step=0.087307 library_ms_total=68.019470 library_ms_step=0.068019 sim_ms_total=93.639632 bandwidth_GBps=350.981523 update_occupancy_pct=100.00 active_blocks_per_sm=8 checksum=8.772379751863e-11 max_error=-1.000000000000e+00 note=none
+SETUP backend=B2_cublas length=1.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=101 ny=101 steps=1000
+RESULT backend=B2_cublas length=1.00 nx=101 ny=101 steps=1000 gpu_ms_total=2712.428223 gpu_ms_step=2.712428 library_ms_total=2699.095459 library_ms_step=2.699095 sim_ms_total=4694.174441 bandwidth_GBps=0.173442 update_occupancy_pct=100.00 active_blocks_per_sm=8 checksum=-3.932121435635e+03 max_error=-1.000000000000e+00 note=none
+SETUP backend=B2_cublas length=2.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=201 ny=201 steps=1000
+RESULT backend=B2_cublas length=2.00 nx=201 ny=201 steps=1000 gpu_ms_total=9612.373047 gpu_ms_step=9.612373 library_ms_total=9600.105469 library_ms_step=9.600105 sim_ms_total=10525.983498 bandwidth_GBps=0.197750 update_occupancy_pct=100.00 active_blocks_per_sm=8 checksum=9.324713310527e-12 max_error=-1.000000000000e+00 note=none
