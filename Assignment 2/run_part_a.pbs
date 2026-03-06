@@ -1,0 +1,17 @@
+#!/bin/bash
+#PBS -N assignment2_partA
+#PBS -l select=1:ngpus=1
+#PBS -l walltime=00:30:00
+#PBS -q normal
+#PBS -j oe
+
+module load cuda/12.2.2
+
+cd /home/users/ntu/c230179/Desktop/SC4064/Assignment\ 2 || exit 1
+
+make clean
+make
+
+for L in 1 2 4 8; do
+    ./part_a_wave --kernel both --benchmark-blocks 1 --steps 1000 --length "$L"
+done
