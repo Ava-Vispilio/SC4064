@@ -1,6 +1,6 @@
 ---
 name: Part B CUDA libraries plan
-overview: Implement the Part B wave solver as a standalone self-driving CUDA-libraries driver that runs both cuSPARSE and cuBLAS experiments, reports structured timing data, and optionally exports snapshots for later visualization.
+overview: Implement the Part B wave solver as a standalone self-driving CUDA-libraries driver that runs both cuSPARSE and cuBLAS experiments, reports structured timing data, and now exports snapshots for one representative visualization run that can be plotted later on the host.
 todos:
   - id: refactor-common-driver
     content: Build the standalone Part B driver with shared setup, structured reporting, and fixed experiment lists.
@@ -74,7 +74,7 @@ For each backend/domain case it then prints:
 - `SETUP`
 - `RESULT`, or `SKIP` for dense cases that do not fit the memory budget
 
-Snapshot export is implemented but disabled by default through `kExportSnapshots = false`. When enabled, CSV files are written for selected timesteps so plotting can be done later on the host.
+Snapshot export is now enabled, but only for one representative run rather than for every backend/domain case. The code keeps the full performance sweep unchanged and writes CSV snapshots only for `B1_cusparse` at `L = 1.0`.
 
 ## Backend-Specific Implementation Strategy
 
@@ -106,7 +106,8 @@ This backend exists mainly for comparison and inefficiency discussion, not for t
 set constants c, dx, dy, dt, steps
 set cusparse_lengths = [1, 2, 4, 8]
 set cublas_lengths   = [1, 2]
-set export_snapshots = false by default
+set export_snapshots = true
+set visualization run = B1_cusparse at L = 1.0
 lambda  = c*dt/dx
 lambda2 = c*c*dt*dt/(dx*dy)
 
@@ -119,6 +120,7 @@ if run cuSPARSE:
         nx = L/dx + 1
         ny = L/dy + 1
         build initial u_prev and u_curr
+        enable snapshot export only if backend = B1_cusparse and L = 1.0
         print SETUP
         run cuSPARSE backend
         print RESULT
@@ -128,6 +130,7 @@ if run cuBLAS:
         nx = L/dx + 1
         ny = L/dy + 1
         build initial u_prev and u_curr
+        disable snapshot export for all cuBLAS runs
         print SETUP
         run cuBLAS backend
         if dense matrix is too large:
@@ -231,9 +234,20 @@ So the plan should describe comparison against Part A as a report-analysis step 
 
 ## Visualization Plan That Matches The Code
 
-Visualization support is already built in but turned off by default.
+Visualization support is now enabled for one representative run:
 
-When snapshot export is enabled, the program writes CSV snapshots for:
+- backend: `B1_cusparse`
+- domain length: `L = 1.0`
+- timestep count: the full `1000` steps already used by the driver
+
+This is the chosen visualization case because:
+
+- `cuSPARSE` is the main Part B backend and the one that scales across all required domain sizes
+- `L = 1.0` is the assignment’s baseline domain, so it is the cleanest representative case to show in the report
+- keeping the full `1000` steps preserves consistency with the existing measurements and avoids introducing a special visualization-only timestep count
+- exporting only one backend/domain case prevents the run from generating unnecessary CSV files while leaving the rest of the scaling study unchanged
+
+For that representative run, the program writes CSV snapshots for:
 
 - step `0`
 - step `steps/4`
@@ -246,6 +260,8 @@ These CSV files are intended to be processed later by the host-side plotting scr
 - 2D heatmaps
 - surface plots
 - optional animation
+
+The code change for this is deliberately minimal: the main experiment loops still run exactly as before, but per-run snapshot export is turned on only when the backend/domain pair matches the selected visualization case.
 
 That means visualization is a two-stage workflow:
 
@@ -274,6 +290,6 @@ This updated plan matches the current implementation:
 - fixed hardcoded experiment lists
 - structured `DEVICE`/`CONFIG`/`MEASURE`/`SETUP`/`RESULT` output
 - `SKIP` handling for dense cases
-- optional CSV snapshot export
+- CSV snapshot export enabled only for the representative `B1_cusparse`, `L = 1.0` run
 - no automatic in-program Part A comparison yet
 

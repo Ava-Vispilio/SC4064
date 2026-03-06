@@ -55,10 +55,12 @@ constexpr int kUpdateBlockY = 8;
 constexpr int kDefaultSteps = 1000;
 constexpr bool kRunCuSparse = true;
 constexpr bool kRunCuBlas = true;
-constexpr bool kExportSnapshots = false;
+constexpr bool kExportSnapshots = true;
 constexpr double kDenseMaxGB = 20.0;
 constexpr double kCuSparseLengths[] = {1.0, 2.0, 4.0, 8.0};
 constexpr double kCuBlasLengths[] = {1.0, 2.0};
+constexpr char kSnapshotBackend[] = "B1_cusparse";
+constexpr double kSnapshotLength = 1.0;
 const char kSnapshotDir[] = "part_b_snapshots";
 
 struct Options {
@@ -367,6 +369,12 @@ void compute_update_kernel_occupancy(const cudaDeviceProp &device_prop,
     const int active_warps = active_blocks * ((kUpdateBlockX * kUpdateBlockY + device_prop.warpSize - 1) / device_prop.warpSize);
     *active_blocks_per_sm = active_blocks;
     *occupancy_pct = std::min(100.0, 100.0 * static_cast<double>(active_warps) / static_cast<double>(max_warps_per_sm));
+}
+
+bool should_export_snapshots_for_run(const Options &options, const char *backend_label) {
+    return options.export_snapshots &&
+           std::strcmp(backend_label, kSnapshotBackend) == 0 &&
+           std::fabs(options.domain_length - kSnapshotLength) < 1e-12;
 }
 
 void maybe_export_initial_snapshot(bool export_snapshots,
@@ -813,6 +821,10 @@ int main(void) {
            kRunCuBlas ? 1 : 0,
            options.export_snapshots ? 1 : 0,
            options.dense_max_gb);
+    printf("VISUALIZATION export_backend=%s export_length=%.2f snapshot_dir=%s\n",
+           kSnapshotBackend,
+           kSnapshotLength,
+           options.snapshot_dir.c_str());
     printf("MEASURE bytes_per_update=%.0f update_block=%dx%d\n",
            kBytesPerUpdate,
            kUpdateBlockX,
@@ -827,6 +839,7 @@ int main(void) {
             initialize_fields(&initial_prev, &initial_curr, nx, ny, kDx, kDy, lambda2);
             Options run_options = options;
             run_options.domain_length = domain_length;
+            run_options.export_snapshots = should_export_snapshots_for_run(run_options, "B1_cusparse");
 
             printf("SETUP backend=B1_cusparse length=%.2f dx=%.5f dy=%.5f dt=%.5f c=%.2f lambda=%.6f lambda2=%.6f nx=%d ny=%d steps=%d\n",
                    domain_length,
@@ -855,6 +868,7 @@ int main(void) {
             initialize_fields(&initial_prev, &initial_curr, nx, ny, kDx, kDy, lambda2);
             Options run_options = options;
             run_options.domain_length = domain_length;
+            run_options.export_snapshots = should_export_snapshots_for_run(run_options, "B2_cublas");
 
             printf("SETUP backend=B2_cublas length=%.2f dx=%.5f dy=%.5f dt=%.5f c=%.2f lambda=%.6f lambda2=%.6f nx=%d ny=%d steps=%d\n",
                    domain_length,
