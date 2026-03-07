@@ -1,4 +1,5 @@
 #include <cublas_v2.h>
+#include <cuda_profiler_api.h>
 #include <cuda_runtime.h>
 #include <cusparse.h>
 
@@ -11,6 +12,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <fstream>
+#include <iterator>
 #include <limits>
 #include <new>
 #include <string>
@@ -44,6 +46,10 @@
 
 namespace {
 
+#ifndef PART_B_PROFILE_MODE
+#define PART_B_PROFILE_MODE 0
+#endif
+
 constexpr double kPi = 3.14159265358979323846;
 constexpr double kWaveSpeed = 1.0;
 constexpr double kDx = 0.01;
@@ -53,9 +59,14 @@ constexpr double kBytesPerUpdate = 48.0;
 constexpr int kUpdateBlockX = 32;
 constexpr int kUpdateBlockY = 8;
 constexpr int kDefaultSteps = 1000;
-constexpr bool kRunCuSparse = true;
-constexpr bool kRunCuBlas = true;
-constexpr bool kExportSnapshots = true;
+constexpr int kPartBProfileMode = PART_B_PROFILE_MODE;
+constexpr bool kProfilingMode = (kPartBProfileMode != 0);
+constexpr int kProfiledStep = 10;
+constexpr double kProfileCuSparseLength = 8.0;
+constexpr double kProfileCuBlasLength = 1.0;
+constexpr bool kRunCuSparse = (kPartBProfileMode == 0 || kPartBProfileMode == 1);
+constexpr bool kRunCuBlas = (kPartBProfileMode == 0 || kPartBProfileMode == 2);
+constexpr bool kExportSnapshots = kProfilingMode ? false : true;
 constexpr double kDenseMaxGB = 20.0;
 constexpr double kCuSparseLengths[] = {1.0, 2.0, 4.0, 8.0};
 constexpr double kCuBlasLengths[] = {1.0, 2.0};
@@ -104,6 +115,7 @@ struct DenseMatrixHost {
 
 Options default_options() {
     Options options;
+    options.export_snapshots = kExportSnapshots;
     if (options.steps <= 0) {
         fprintf(stderr, "Number of steps must be positive.\n");
         std::exit(EXIT_FAILURE);
@@ -114,6 +126,45 @@ Options default_options() {
     }
 
     return options;
+}
+
+std::vector<double> selected_cusparse_lengths() {
+    if (kPartBProfileMode == 1) {
+        return {kProfileCuSparseLength};
+    }
+
+    return std::vector<double>(std::begin(kCuSparseLengths), std::end(kCuSparseLengths));
+}
+
+std::vector<double> selected_cublas_lengths() {
+    if (kPartBProfileMode == 2) {
+        return {kProfileCuBlasLength};
+    }
+
+    return std::vector<double>(std::begin(kCuBlasLengths), std::end(kCuBlasLengths));
+}
+
+std::string profile_mode_label() {
+    if (kPartBProfileMode == 1) {
+        return "B1_cusparse";
+    }
+    if (kPartBProfileMode == 2) {
+        return "B2_cublas";
+    }
+    return "none";
+}
+
+std::string format_lengths_label(const std::vector<double> &lengths) {
+    std::string label;
+    char buffer[32];
+    for (size_t i = 0; i < lengths.size(); ++i) {
+        if (i > 0) {
+            label += ",";
+        }
+        std::snprintf(buffer, sizeof(buffer), "%.2f", lengths[i]);
+        label += buffer;
+    }
+    return label;
 }
 
 int grid_points_from_length(double length, double spacing) {
@@ -522,6 +573,10 @@ RunResult run_cusparse(const Options &options,
 
     CUDA_CHECK(cudaEventRecord(gpu_start));
     for (int step = 0; step < options.steps; ++step) {
+        const bool profile_this_step = kProfilingMode && step == kProfiledStep;
+        if (profile_this_step) {
+            CUDA_CHECK(cudaProfilerStart());
+        }
         CUSPARSE_CHECK(cusparseDnVecSetValues(vec_x, d_curr));
         CUSPARSE_CHECK(cusparseDnVecSetValues(vec_y, d_laplacian));
 
@@ -543,6 +598,10 @@ RunResult run_cusparse(const Options &options,
         result.library_ms_total += lib_ms;
 
         update_from_laplacian<<<grid, block>>>(d_prev, d_curr, d_laplacian, d_next, nx, ny, lambda2);
+        if (profile_this_step) {
+            CUDA_CHECK(cudaDeviceSynchronize());
+            CUDA_CHECK(cudaProfilerStop());
+        }
         double *tmp = d_prev;
         d_prev = d_curr;
         d_curr = d_next;
@@ -688,6 +747,10 @@ RunResult run_cublas(const Options &options,
 
     CUDA_CHECK(cudaEventRecord(gpu_start));
     for (int step = 0; step < options.steps; ++step) {
+        const bool profile_this_step = kProfilingMode && step == kProfiledStep;
+        if (profile_this_step) {
+            CUDA_CHECK(cudaProfilerStart());
+        }
         CUDA_CHECK(cudaEventRecord(lib_start));
         CUBLAS_CHECK(cublasDgemv(handle,
                                  CUBLAS_OP_N,
@@ -708,6 +771,10 @@ RunResult run_cublas(const Options &options,
         result.library_ms_total += lib_ms;
 
         update_from_laplacian<<<grid, block>>>(d_prev, d_curr, d_laplacian, d_next, nx, ny, lambda2);
+        if (profile_this_step) {
+            CUDA_CHECK(cudaDeviceSynchronize());
+            CUDA_CHECK(cudaProfilerStop());
+        }
         double *tmp = d_prev;
         d_prev = d_curr;
         d_curr = d_next;
@@ -797,6 +864,8 @@ void print_skip_line(const RunResult &result, double domain_length) {
 
 int main(void) {
     const Options options = default_options();
+    const std::vector<double> cusparse_lengths = selected_cusparse_lengths();
+    const std::vector<double> cublas_lengths = selected_cublas_lengths();
 
     CUDA_CHECK(cudaSetDevice(0));
 
@@ -815,12 +884,20 @@ int main(void) {
            device_prop.maxThreadsPerMultiProcessor,
            device_prop.sharedMemPerMultiprocessor,
            device_prop.totalGlobalMem);
-    printf("CONFIG steps=%d run_cusparse=%d run_cublas=%d export_snapshots=%d dense_max_gb=%.2f\n",
+    if (kProfilingMode) {
+        printf("PROFILE mode=part_b representative_backend=%s representative_length=%.2f profiled_step=%d\n",
+               profile_mode_label().c_str(),
+               kPartBProfileMode == 1 ? kProfileCuSparseLength : kProfileCuBlasLength,
+               kProfiledStep);
+    }
+    printf("CONFIG steps=%d run_cusparse=%d run_cublas=%d export_snapshots=%d dense_max_gb=%.2f cusparse_lengths=%s cublas_lengths=%s\n",
            options.steps,
            kRunCuSparse ? 1 : 0,
            kRunCuBlas ? 1 : 0,
            options.export_snapshots ? 1 : 0,
-           options.dense_max_gb);
+           options.dense_max_gb,
+           format_lengths_label(cusparse_lengths).c_str(),
+           format_lengths_label(cublas_lengths).c_str());
     printf("VISUALIZATION export_backend=%s export_length=%.2f snapshot_dir=%s\n",
            kSnapshotBackend,
            kSnapshotLength,
@@ -831,7 +908,7 @@ int main(void) {
            kUpdateBlockY);
 
     if (kRunCuSparse) {
-        for (double domain_length : kCuSparseLengths) {
+        for (double domain_length : cusparse_lengths) {
             const int nx = grid_points_from_length(domain_length, kDx);
             const int ny = grid_points_from_length(domain_length, kDy);
             std::vector<double> initial_prev;
@@ -860,7 +937,7 @@ int main(void) {
     }
 
     if (kRunCuBlas) {
-        for (double domain_length : kCuBlasLengths) {
+        for (double domain_length : cublas_lengths) {
             const int nx = grid_points_from_length(domain_length, kDx);
             const int ny = grid_points_from_length(domain_length, kDy);
             std::vector<double> initial_prev;

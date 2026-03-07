@@ -1,6 +1,6 @@
 ---
 name: Part A CUDA plan
-overview: Implement and validate the two required custom CUDA kernels for the 2D wave equation in a standalone self-driving driver that auto-sweeps the chosen domain sizes and block configurations, then benchmark and justify the final block shape with A100-aware evidence.
+overview: Implement and validate the two required custom CUDA kernels for the 2D wave equation in a standalone self-driving driver that auto-sweeps the chosen domain sizes and block configurations, then provide a profiling-only representative case for Nsight Compute without disturbing the main benchmark flow.
 todos:
   - id: define-simulation-setup
     content: "Specify the Part A simulation setup: grid size, state arrays, initialization, boundary rules, and timestep loop."
@@ -66,6 +66,15 @@ For each experiment, it prints structured lines:
 - `RESULT` once per kernel/block/domain combination
 
 This matches the current execution flow used by the PBS script and logs.
+
+The driver now also contains a compile-time profiling mode used by `Assignment 2/profile_part_a.pbs`. In that mode it runs just one representative case:
+
+- kernel: `A1_global`
+- block size: `32x8`
+- domain length: `L = 8.0`
+- steps: still `1000`
+
+The profiling path keeps the normal code structure intact, but narrows execution to a single case and uses `cudaProfilerStart()` / `cudaProfilerStop()` around one warmed-up timestep so `ncu` can capture the representative launch without profiling the full sweep.
 
 ## Implementation Strategy
 
@@ -243,12 +252,34 @@ Each `RESULT` line already provides the core Part A report inputs:
 
 That means the remaining Part A write-up can be built directly from the current log without changing the execution flow again.
 
+## Profiling Workflow
+
+Part A now supports a profiling-only build for the final report evidence.
+
+The chosen representative case is:
+
+- `A1_global`
+- block `32x8`
+- domain length `L = 8.0`
+
+This matches the best custom-kernel configuration seen in the current results and gives a large enough problem to make profiler throughput numbers meaningful.
+
+The profiling design is:
+
+- keep the normal `1000` timestep count unchanged
+- disable the usual multi-case sweep by compiling with `PART_A_PROFILE_MODE=1`
+- run a single representative case
+- start and stop the profiler around one warmed-up iteration instead of all iterations
+
+This is implemented through the dedicated PBS script `Assignment 2/profile_part_a.pbs`, which compiles the profiling binary and launches `ncu` with `--profile-from-start off`.
+
 ## What This Plan Now Matches
 
 This updated plan matches the current implementation:
 
 - standalone `part_a_wave.cu`
 - automatic sweep over selected domain lengths and block sizes
+- compile-time profiling mode for one representative Nsight Compute run
 - A1 used as the per-configuration correctness baseline
 - A2 implemented with cooperative halo loading
 - structured logging intended for later report tables

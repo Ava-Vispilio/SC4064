@@ -1,6 +1,6 @@
 ---
 name: Part B CUDA libraries plan
-overview: Implement the Part B wave solver as a standalone self-driving CUDA-libraries driver that runs both cuSPARSE and cuBLAS experiments, reports structured timing data, and now exports snapshots for one representative visualization run that can be plotted later on the host.
+overview: Implement the Part B wave solver as a standalone self-driving CUDA-libraries driver that runs both cuSPARSE and cuBLAS experiments, reports structured timing data, exports snapshots for one representative visualization run, and provides profiling-only representative cases for final report evidence.
 todos:
   - id: refactor-common-driver
     content: Build the standalone Part B driver with shared setup, structured reporting, and fixed experiment lists.
@@ -76,6 +76,13 @@ For each backend/domain case it then prints:
 
 Snapshot export is now enabled, but only for one representative run rather than for every backend/domain case. The code keeps the full performance sweep unchanged and writes CSV snapshots only for `B1_cusparse` at `L = 1.0`.
 
+The driver also now supports compile-time profiling modes used by dedicated PBS scripts:
+
+- `PART_B_PROFILE_MODE=1` profiles representative `B1_cusparse` at `L = 8.0`
+- `PART_B_PROFILE_MODE=2` profiles representative `B2_cublas` at `L = 1.0`
+
+In profiling mode, snapshot export is disabled and the driver starts and stops the profiler around one warmed-up timestep so `ncu` captures a representative iteration rather than the whole run.
+
 ## Backend-Specific Implementation Strategy
 
 ### `B1_cusparse`
@@ -108,6 +115,9 @@ set cusparse_lengths = [1, 2, 4, 8]
 set cublas_lengths   = [1, 2]
 set export_snapshots = true
 set visualization run = B1_cusparse at L = 1.0
+set profiling modes:
+    mode 1 -> B1_cusparse at L = 8.0
+    mode 2 -> B2_cublas at L = 1.0
 lambda  = c*dt/dx
 lambda2 = c*c*dt*dt/(dx*dy)
 
@@ -232,6 +242,33 @@ Important current detail:
 
 So the plan should describe comparison against Part A as a report-analysis step based on logs or later post-processing, not as something the current code already does automatically.
 
+## Profiling Workflow
+
+Part B now supports dedicated profiling-only builds for the final report.
+
+The representative profiling cases are:
+
+- `B1_cusparse` at `L = 8.0`
+- `B2_cublas` at `L = 1.0`
+
+These choices are intentional:
+
+- `B1_cusparse`, `L = 8.0` is the scalable library case and the most useful representative workload for throughput analysis
+- `B2_cublas`, `L = 1.0` is the small dense case that is still practical to profile while giving direct evidence for inefficiency
+
+The profiling design is:
+
+- keep the normal `1000` timestep count unchanged
+- compile a profiling-only binary with `PART_B_PROFILE_MODE`
+- run only one representative backend/domain case
+- disable snapshot export in profiling mode so visualization I/O does not contaminate profiler results
+- call `cudaProfilerStart()` / `cudaProfilerStop()` around one warmed-up iteration so Nsight Compute captures the library work plus the update kernel for that timestep
+
+The profiling scripts are:
+
+- `Assignment 2/profile_part_b_cusparse.pbs`
+- `Assignment 2/profile_part_b_cublas.pbs`
+
 ## Visualization Plan That Matches The Code
 
 Visualization support is now enabled for one representative run:
@@ -288,6 +325,7 @@ This updated plan matches the current implementation:
 - standalone `part_b_wave.cu`
 - both `cuSPARSE` and `cuBLAS` backends
 - fixed hardcoded experiment lists
+- compile-time profiling modes for representative `cuSPARSE` and `cuBLAS` Nsight Compute runs
 - structured `DEVICE`/`CONFIG`/`MEASURE`/`SETUP`/`RESULT` output
 - `SKIP` handling for dense cases
 - CSV snapshot export enabled only for the representative `B1_cusparse`, `L = 1.0` run

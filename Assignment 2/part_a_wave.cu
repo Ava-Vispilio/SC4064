@@ -1,3 +1,4 @@
+#include <cuda_profiler_api.h>
 #include <cuda_runtime.h>
 
 #include <algorithm>
@@ -6,6 +7,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iterator>
 #include <string>
 #include <vector>
 
@@ -19,6 +21,10 @@
 
 namespace {
 
+#ifndef PART_A_PROFILE_MODE
+#define PART_A_PROFILE_MODE 0
+#endif
+
 constexpr double kPi = 3.14159265358979323846;
 constexpr double kWaveSpeed = 1.0;
 constexpr double kDx = 0.01;
@@ -26,9 +32,14 @@ constexpr double kDy = 0.01;
 constexpr double kDt = 0.005;
 constexpr double kBytesPerUpdate = 48.0;
 constexpr int kDefaultSteps = 1000;
+constexpr bool kProfilingMode = (PART_A_PROFILE_MODE != 0);
+constexpr int kProfiledStep = 10;
+constexpr double kProfileDomainLength = 8.0;
+constexpr int kProfileBlockX = 32;
+constexpr int kProfileBlockY = 8;
 constexpr bool kRunGlobal = true;
-constexpr bool kRunShared = true;
-constexpr bool kBenchmarkBlocks = true;
+constexpr bool kRunShared = !kProfilingMode;
+constexpr bool kBenchmarkBlocks = !kProfilingMode;
 constexpr double kDomainLengths[] = {1.0, 2.0, 4.0, 8.0};
 
 enum class KernelKind {
@@ -70,6 +81,9 @@ Options default_options() {
     options.run_global = kRunGlobal;
     options.run_shared = kRunShared;
     options.benchmark_blocks = kBenchmarkBlocks;
+    options.domain_length = kProfilingMode ? kProfileDomainLength : 1.0;
+    options.block_x = kProfileBlockX;
+    options.block_y = kProfileBlockY;
     if (options.steps <= 0) {
         fprintf(stderr, "Number of steps must be positive.\n");
         std::exit(EXIT_FAILURE);
@@ -80,6 +94,34 @@ Options default_options() {
     }
 
     return options;
+}
+
+std::vector<double> selected_domain_lengths(const Options &options) {
+    if (kProfilingMode) {
+        return {options.domain_length};
+    }
+
+    return std::vector<double>(std::begin(kDomainLengths), std::end(kDomainLengths));
+}
+
+std::string format_lengths_label(const Options &options) {
+    if (kProfilingMode) {
+        char buffer[32];
+        std::snprintf(buffer, sizeof(buffer), "%.2f", options.domain_length);
+        return std::string(buffer);
+    }
+
+    return "1.00,2.00,4.00,8.00";
+}
+
+std::string format_blocks_label(const Options &options) {
+    if (options.benchmark_blocks) {
+        return "8x8,16x16,32x8";
+    }
+
+    char buffer[32];
+    std::snprintf(buffer, sizeof(buffer), "%dx%d", options.block_x, options.block_y);
+    return std::string(buffer);
 }
 
 int grid_points_from_length(double length, double spacing) {
@@ -308,7 +350,15 @@ RunResult run_configuration(KernelKind kernel_kind,
 
     CUDA_CHECK(cudaEventRecord(start_event));
     for (int step = 0; step < steps; ++step) {
+        const bool profile_this_step = kProfilingMode && step == kProfiledStep;
+        if (profile_this_step) {
+            CUDA_CHECK(cudaProfilerStart());
+        }
         launch_kernel(kernel_kind, grid, block, shared_mem_bytes, d_prev, d_curr, d_next, nx, ny, lambda2);
+        if (profile_this_step) {
+            CUDA_CHECK(cudaDeviceSynchronize());
+            CUDA_CHECK(cudaProfilerStop());
+        }
         double *tmp = d_prev;
         d_prev = d_curr;
         d_curr = d_next;
@@ -366,6 +416,7 @@ void print_result_line(const RunResult &result, double domain_length) {
 
 int main(void) {
     const Options options = default_options();
+    const std::vector<double> domain_lengths = selected_domain_lengths(options);
 
     CUDA_CHECK(cudaSetDevice(0));
 
@@ -383,11 +434,20 @@ int main(void) {
            device_prop.warpSize,
            device_prop.maxThreadsPerMultiProcessor,
            device_prop.sharedMemPerMultiprocessor);
-    printf("CONFIG steps=%d run_global=%d run_shared=%d benchmark_blocks=%d lengths=1.00,2.00,4.00,8.00 blocks=8x8,16x16,32x8\n",
+    if (kProfilingMode) {
+        printf("PROFILE mode=part_a representative_kernel=A1_global representative_length=%.2f representative_block=%dx%d profiled_step=%d\n",
+               options.domain_length,
+               options.block_x,
+               options.block_y,
+               kProfiledStep);
+    }
+    printf("CONFIG steps=%d run_global=%d run_shared=%d benchmark_blocks=%d lengths=%s blocks=%s\n",
            options.steps,
            options.run_global ? 1 : 0,
            options.run_shared ? 1 : 0,
-           options.benchmark_blocks ? 1 : 0);
+           options.benchmark_blocks ? 1 : 0,
+           format_lengths_label(options).c_str(),
+           format_blocks_label(options).c_str());
 
     std::vector<dim3> block_configs;
     if (options.benchmark_blocks) {
@@ -407,7 +467,7 @@ int main(void) {
         }
     }
 
-    for (double domain_length : kDomainLengths) {
+    for (double domain_length : domain_lengths) {
         const int nx = grid_points_from_length(domain_length, kDx);
         const int ny = grid_points_from_length(domain_length, kDy);
         std::vector<double> initial_prev;
