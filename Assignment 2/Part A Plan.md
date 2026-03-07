@@ -74,7 +74,7 @@ The driver now also contains a compile-time profiling mode used by `Assignment 2
 - domain length: `L = 8.0`
 - steps: still `1000`
 
-The profiling path keeps the normal code structure intact, but narrows execution to a single case and uses `cudaProfilerStart()` / `cudaProfilerStop()` around one warmed-up timestep so `ncu` can capture the representative launch without profiling the full sweep.
+The profiling path keeps the normal code structure intact, but narrows execution to a single case so the profiler script can capture a representative steady-state launch without profiling the full sweep.
 
 ## Implementation Strategy
 
@@ -269,9 +269,9 @@ The profiling design is:
 - keep the normal `1000` timestep count unchanged
 - disable the usual multi-case sweep by compiling with `PART_A_PROFILE_MODE=1`
 - run a single representative case
-- start and stop the profiler around one warmed-up iteration instead of all iterations
+- let Nsight Compute skip the first `10` kernel launches and capture the next `1` launch
 
-This is implemented through the dedicated PBS script `Assignment 2/profile_part_a.pbs`, which compiles the profiling binary and launches `ncu` with `--profile-from-start off`.
+This is implemented through the dedicated PBS script `Assignment 2/profile_part_a.pbs`, which compiles the profiling binary and launches `ncu` with `--launch-skip 10 --launch-count 1`.
 
 ## What This Plan Now Matches
 

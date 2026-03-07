@@ -81,7 +81,7 @@ The driver also now supports compile-time profiling modes used by dedicated PBS 
 - `PART_B_PROFILE_MODE=1` profiles representative `B1_cusparse` at `L = 8.0`
 - `PART_B_PROFILE_MODE=2` profiles representative `B2_cublas` at `L = 1.0`
 
-In profiling mode, snapshot export is disabled and the driver starts and stops the profiler around one warmed-up timestep so `ncu` captures a representative iteration rather than the whole run.
+In profiling mode, snapshot export is disabled and the PBS profiler scripts use Nsight Compute launch filtering to capture a small representative steady-state launch window rather than the whole run.
 
 ## Backend-Specific Implementation Strategy
 
@@ -262,12 +262,20 @@ The profiling design is:
 - compile a profiling-only binary with `PART_B_PROFILE_MODE`
 - run only one representative backend/domain case
 - disable snapshot export in profiling mode so visualization I/O does not contaminate profiler results
-- call `cudaProfilerStart()` / `cudaProfilerStop()` around one warmed-up iteration so Nsight Compute captures the library work plus the update kernel for that timestep
+- use Nsight Compute launch filtering in the PBS scripts to skip early warm-up launches and capture a short steady-state launch window
 
 The profiling scripts are:
 
 - `Assignment 2/profile_part_b_cusparse.pbs`
 - `Assignment 2/profile_part_b_cublas.pbs`
+
+The current `ncu` settings are:
+
+- Part A: `--launch-skip 10 --launch-count 1`
+- Part B `cuSPARSE`: `--launch-skip 20 --launch-count 10`
+- Part B `cuBLAS`: `--launch-skip 20 --launch-count 10`
+
+The longer launch window for Part B is intentional because the library call plus the custom update kernel may involve multiple device launches per timestep, so capturing a short launch range is more reliable than assuming one launch per iteration.
 
 ## Visualization Plan That Matches The Code
 

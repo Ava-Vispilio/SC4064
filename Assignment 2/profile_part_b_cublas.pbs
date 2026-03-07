@@ -10,4 +10,4 @@ module load cuda/12.2.2
 cd /home/users/ntu/c230179/Desktop/SC4064/Assignment\ 2 || exit 1
 
 nvcc -O3 -lineinfo -std=c++17 -DPART_B_PROFILE_MODE=2 -o part_b_wave_profile_cublas part_b_wave.cu -lcusparse -lcublas
-ncu --set speedOfLight --section LaunchStats --target-processes all --profile-from-start off --force-overwrite true --export part_b_cublas_profile ./part_b_wave_profile_cublas
+ncu --set speedOfLight --section LaunchStats --target-processes all --launch-skip 20 --launch-count 10 --force-overwrite true --export part_b_cublas_profile ./part_b_wave_profile_cublas
