@@ -27,8 +27,17 @@ echo "[5/7] Plain execution sanity check"
 tail -n 20 part_b_cusparse_profile_plain.log
 
 echo "[6/7] Simple Nsight Compute sanity check"
-ncu --section LaunchStats --target-processes all --launch-count 1 ./part_b_wave_profile_cusparse > part_b_cusparse_profile_ncu_smoke.log 2>&1
+set +e
+timeout 120s ncu --section LaunchStats --target-processes application-only --launch-count 1 ./part_b_wave_profile_cusparse > part_b_cusparse_profile_ncu_smoke.log 2>&1
+smoke_status=$?
+set -e
+echo "Part B cuSPARSE smoke-test exit code: ${smoke_status}"
 tail -n 40 part_b_cusparse_profile_ncu_smoke.log
 
 echo "[7/7] Exporting final Part B cuSPARSE profiling report"
-ncu --set speedOfLight --section LaunchStats --target-processes all --launch-skip 20 --launch-count 10 --force-overwrite true --export part_b_cusparse_profile ./part_b_wave_profile_cusparse
+set +e
+timeout 900s ncu --set speedOfLight --section LaunchStats --target-processes application-only --launch-skip 20 --launch-count 10 --force-overwrite true --export part_b_cusparse_profile ./part_b_wave_profile_cusparse > part_b_cusparse_profile_ncu_final.log 2>&1
+final_status=$?
+set -e
+echo "Part B cuSPARSE final-profile exit code: ${final_status}"
+tail -n 80 part_b_cusparse_profile_ncu_final.log

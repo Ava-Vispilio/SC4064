@@ -284,8 +284,9 @@ Each profiling PBS script now runs in checkpoints to make failures diagnosable:
 - verify `ncu` availability with `which ncu` and `ncu --version`
 - compile the profiling binary
 - run the binary once without `ncu` and save a plain-run log
-- run a lightweight `ncu` smoke test with `--launch-count 1` and save an `ncu` smoke log
+- run a lightweight `ncu` smoke test with `--target-processes application-only --launch-count 1`, bounded by `timeout 120s`, and save an `ncu` smoke log
 - only then run the final exported `ncu` command
+- bound the final exported command with `timeout 900s`, save a final `ncu` log, and print exit codes for both the smoke test and the final profile run
 
 This staged workflow makes it possible to distinguish between:
 
