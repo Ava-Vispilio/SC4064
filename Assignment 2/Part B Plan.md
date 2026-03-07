@@ -278,6 +278,22 @@ The current `ncu` settings are:
 
 The longer launch window for Part B is intentional because the library call plus the custom update kernel may involve multiple device launches per timestep, so capturing a short launch range is more reliable than assuming one launch per iteration.
 
+Each profiling PBS script now runs in checkpoints to make failures diagnosable:
+
+- enable shell tracing with `set -euxo pipefail`
+- verify `ncu` availability with `which ncu` and `ncu --version`
+- compile the profiling binary
+- run the binary once without `ncu` and save a plain-run log
+- run a simple `ncu` smoke test and save an `ncu` smoke log
+- only then run the final exported `ncu` command
+
+This staged workflow makes it possible to distinguish between:
+
+- compile failures
+- profiling-mode binary failures
+- missing or unusable Nsight Compute installations
+- launch-filter mismatches in the final exported profile command
+
 ## Visualization Plan That Matches The Code
 
 Visualization support is now enabled for one representative run:

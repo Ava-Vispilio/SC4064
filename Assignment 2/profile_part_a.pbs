@@ -5,9 +5,30 @@
 #PBS -q normal
 #PBS -j oe
 
+set -euxo pipefail
+
 module load cuda/12.2.2
+
+echo "[1/7] CUDA module loaded"
 
 cd /home/users/ntu/c230179/Desktop/SC4064/Assignment\ 2 || exit 1
 
+echo "[2/7] Working directory: $(pwd)"
+echo "[3/7] Checking Nsight Compute availability"
+which ncu
+ncu --version
+
+echo "[4/7] Compiling Part A profiling binary"
 nvcc -O3 -lineinfo -std=c++17 -DPART_A_PROFILE_MODE=1 -o part_a_wave_profile part_a_wave.cu
+ls -l part_a_wave_profile
+
+echo "[5/7] Plain execution sanity check"
+./part_a_wave_profile > part_a_profile_plain.log 2>&1
+tail -n 20 part_a_profile_plain.log
+
+echo "[6/7] Simple Nsight Compute sanity check"
+ncu --target-processes all ./part_a_wave_profile > part_a_profile_ncu_smoke.log 2>&1
+tail -n 40 part_a_profile_ncu_smoke.log
+
+echo "[7/7] Exporting final Part A profiling report"
 ncu --set speedOfLight --section LaunchStats --target-processes all --launch-skip 10 --launch-count 1 --force-overwrite true --export part_a_profile ./part_a_wave_profile
