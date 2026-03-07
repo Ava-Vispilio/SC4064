@@ -27,7 +27,7 @@ echo "[5/7] Plain execution sanity check"
 tail -n 20 part_b_cublas_profile_plain.log
 
 echo "[6/7] Simple Nsight Compute sanity check"
-ncu --target-processes all ./part_b_wave_profile_cublas > part_b_cublas_profile_ncu_smoke.log 2>&1
+ncu --section LaunchStats --target-processes all --launch-count 1 ./part_b_wave_profile_cublas > part_b_cublas_profile_ncu_smoke.log 2>&1
 tail -n 40 part_b_cublas_profile_ncu_smoke.log
 
 echo "[7/7] Exporting final Part B cuBLAS profiling report"

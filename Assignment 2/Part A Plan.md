@@ -278,7 +278,7 @@ This is implemented through the dedicated PBS script `Assignment 2/profile_part_
 - verify `ncu` availability with `which ncu` and `ncu --version`
 - compile the profiling binary
 - run the binary once without `ncu` and save `part_a_profile_plain.log`
-- run a simple `ncu` smoke test and save `part_a_profile_ncu_smoke.log`
+- run a lightweight `ncu` smoke test with `--launch-count 1` and save `part_a_profile_ncu_smoke.log`
 - finally export the report with `--launch-skip 10 --launch-count 1`
 
 This staged workflow makes it easier to determine whether a failure comes from compilation, the profiling-mode binary itself, the `ncu` environment, or the final filtered profiling command.
