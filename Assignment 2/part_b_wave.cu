@@ -1,5 +1,4 @@
 #include <cublas_v2.h>
-#include <cuda_profiler_api.h>
 #include <cuda_runtime.h>
 #include <cusparse.h>
 
@@ -61,7 +60,6 @@ constexpr int kUpdateBlockY = 8;
 constexpr int kDefaultSteps = 1000;
 constexpr int kPartBProfileMode = PART_B_PROFILE_MODE;
 constexpr bool kProfilingMode = (kPartBProfileMode != 0);
-constexpr int kProfiledStep = 10;
 constexpr double kProfileCuSparseLength = 8.0;
 constexpr double kProfileCuBlasLength = 1.0;
 constexpr bool kRunCuSparse = (kPartBProfileMode == 0 || kPartBProfileMode == 1);
@@ -573,10 +571,6 @@ RunResult run_cusparse(const Options &options,
 
     CUDA_CHECK(cudaEventRecord(gpu_start));
     for (int step = 0; step < options.steps; ++step) {
-        const bool profile_this_step = kProfilingMode && step == kProfiledStep;
-        if (profile_this_step) {
-            CUDA_CHECK(cudaProfilerStart());
-        }
         CUSPARSE_CHECK(cusparseDnVecSetValues(vec_x, d_curr));
         CUSPARSE_CHECK(cusparseDnVecSetValues(vec_y, d_laplacian));
 
@@ -598,10 +592,6 @@ RunResult run_cusparse(const Options &options,
         result.library_ms_total += lib_ms;
 
         update_from_laplacian<<<grid, block>>>(d_prev, d_curr, d_laplacian, d_next, nx, ny, lambda2);
-        if (profile_this_step) {
-            CUDA_CHECK(cudaDeviceSynchronize());
-            CUDA_CHECK(cudaProfilerStop());
-        }
         double *tmp = d_prev;
         d_prev = d_curr;
         d_curr = d_next;
@@ -747,10 +737,6 @@ RunResult run_cublas(const Options &options,
 
     CUDA_CHECK(cudaEventRecord(gpu_start));
     for (int step = 0; step < options.steps; ++step) {
-        const bool profile_this_step = kProfilingMode && step == kProfiledStep;
-        if (profile_this_step) {
-            CUDA_CHECK(cudaProfilerStart());
-        }
         CUDA_CHECK(cudaEventRecord(lib_start));
         CUBLAS_CHECK(cublasDgemv(handle,
                                  CUBLAS_OP_N,
@@ -771,10 +757,6 @@ RunResult run_cublas(const Options &options,
         result.library_ms_total += lib_ms;
 
         update_from_laplacian<<<grid, block>>>(d_prev, d_curr, d_laplacian, d_next, nx, ny, lambda2);
-        if (profile_this_step) {
-            CUDA_CHECK(cudaDeviceSynchronize());
-            CUDA_CHECK(cudaProfilerStop());
-        }
         double *tmp = d_prev;
         d_prev = d_curr;
         d_curr = d_next;
@@ -885,10 +867,9 @@ int main(void) {
            device_prop.sharedMemPerMultiprocessor,
            device_prop.totalGlobalMem);
     if (kProfilingMode) {
-        printf("PROFILE mode=part_b representative_backend=%s representative_length=%.2f profiled_step=%d\n",
+        printf("PROFILE mode=part_b representative_backend=%s representative_length=%.2f\n",
                profile_mode_label().c_str(),
-               kPartBProfileMode == 1 ? kProfileCuSparseLength : kProfileCuBlasLength,
-               kProfiledStep);
+               kPartBProfileMode == 1 ? kProfileCuSparseLength : kProfileCuBlasLength);
     }
     printf("CONFIG steps=%d run_cusparse=%d run_cublas=%d export_snapshots=%d dense_max_gb=%.2f cusparse_lengths=%s cublas_lengths=%s\n",
            options.steps,

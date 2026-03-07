@@ -1,4 +1,3 @@
-#include <cuda_profiler_api.h>
 #include <cuda_runtime.h>
 
 #include <algorithm>
@@ -33,7 +32,6 @@ constexpr double kDt = 0.005;
 constexpr double kBytesPerUpdate = 48.0;
 constexpr int kDefaultSteps = 1000;
 constexpr bool kProfilingMode = (PART_A_PROFILE_MODE != 0);
-constexpr int kProfiledStep = 10;
 constexpr double kProfileDomainLength = 8.0;
 constexpr int kProfileBlockX = 32;
 constexpr int kProfileBlockY = 8;
@@ -350,15 +348,7 @@ RunResult run_configuration(KernelKind kernel_kind,
 
     CUDA_CHECK(cudaEventRecord(start_event));
     for (int step = 0; step < steps; ++step) {
-        const bool profile_this_step = kProfilingMode && step == kProfiledStep;
-        if (profile_this_step) {
-            CUDA_CHECK(cudaProfilerStart());
-        }
         launch_kernel(kernel_kind, grid, block, shared_mem_bytes, d_prev, d_curr, d_next, nx, ny, lambda2);
-        if (profile_this_step) {
-            CUDA_CHECK(cudaDeviceSynchronize());
-            CUDA_CHECK(cudaProfilerStop());
-        }
         double *tmp = d_prev;
         d_prev = d_curr;
         d_curr = d_next;
@@ -435,11 +425,10 @@ int main(void) {
            device_prop.maxThreadsPerMultiProcessor,
            device_prop.sharedMemPerMultiprocessor);
     if (kProfilingMode) {
-        printf("PROFILE mode=part_a representative_kernel=A1_global representative_length=%.2f representative_block=%dx%d profiled_step=%d\n",
+        printf("PROFILE mode=part_a representative_kernel=A1_global representative_length=%.2f representative_block=%dx%d\n",
                options.domain_length,
                options.block_x,
-               options.block_y,
-               kProfiledStep);
+               options.block_y);
     }
     printf("CONFIG steps=%d run_global=%d run_shared=%d benchmark_blocks=%d lengths=%s blocks=%s\n",
            options.steps,

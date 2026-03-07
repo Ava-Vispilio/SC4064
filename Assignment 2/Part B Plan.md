@@ -81,7 +81,7 @@ The driver also now supports compile-time profiling modes used by dedicated PBS 
 - `PART_B_PROFILE_MODE=1` profiles representative `B1_cusparse` at `L = 8.0`
 - `PART_B_PROFILE_MODE=2` profiles representative `B2_cublas` at `L = 1.0`
 
-In profiling mode, snapshot export is disabled and the PBS profiler scripts use Nsight Compute launch filtering to capture a small representative steady-state launch window rather than the whole run.
+In profiling mode, snapshot export is disabled and the PBS profiler scripts use Nsight Compute launch filtering to capture a small representative steady-state launch window rather than the whole run. The code no longer tries to manually gate profiler capture at runtime.
 
 ## Backend-Specific Implementation Strategy
 
@@ -263,6 +263,7 @@ The profiling design is:
 - run only one representative backend/domain case
 - disable snapshot export in profiling mode so visualization I/O does not contaminate profiler results
 - use Nsight Compute launch filtering in the PBS scripts to skip early warm-up launches and capture a short steady-state launch window
+- do not use runtime `cudaProfilerStart()` / `cudaProfilerStop()` gating in the code path
 
 The profiling scripts are:
 
