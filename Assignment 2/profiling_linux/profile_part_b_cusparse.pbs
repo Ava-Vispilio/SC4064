@@ -1,0 +1,45 @@
+#!/bin/bash
+#PBS -N assignment2_partB_cusparse_profile
+#PBS -l select=1:ngpus=1
+#PBS -l walltime=01:00:00
+#PBS -q normal
+#PBS -j oe
+
+set -euxo pipefail
+
+module load cuda/12.2.2
+
+echo "[1/7] CUDA module loaded"
+
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$PROJECT_DIR"
+echo "[2/7] Working directory: $(pwd)"
+
+echo "[3/7] Checking Nsight Compute availability"
+which ncu
+ncu --version
+
+echo "[4/7] Compiling Part B cuSPARSE profiling binary"
+nvcc -O3 -lineinfo -std=c++17 -DPART_B_PROFILE_MODE=1 -o part_b_wave_profile_cusparse part_b_wave.cu -lcusparse -lcublas
+ls -l part_b_wave_profile_cusparse
+
+echo "[5/7] Plain execution sanity check"
+./part_b_wave_profile_cusparse > part_b_cusparse_profile_plain.log 2>&1
+tail -n 20 part_b_cusparse_profile_plain.log
+
+echo "[6/7] Simple Nsight Compute sanity check"
+set +e
+timeout 120s ncu --section LaunchStats --target-processes application-only --launch-count 1 ./part_b_wave_profile_cusparse > part_b_cusparse_profile_ncu_smoke.log 2>&1
+smoke_status=$?
+set -e
+echo "Part B cuSPARSE smoke-test exit code: ${smoke_status}"
+tail -n 40 part_b_cusparse_profile_ncu_smoke.log
+
+echo "[7/7] Exporting final Part B cuSPARSE profiling report"
+set +e
+timeout 900s ncu --set speedOfLight --section LaunchStats --target-processes application-only --launch-skip 20 --launch-count 10 --force-overwrite true --export part_b_cusparse_profile ./part_b_wave_profile_cusparse > part_b_cusparse_profile_ncu_final.log 2>&1
+final_status=$?
+set -e
+echo "Part B cuSPARSE final-profile exit code: ${final_status}"
+tail -n 80 part_b_cusparse_profile_ncu_final.log
