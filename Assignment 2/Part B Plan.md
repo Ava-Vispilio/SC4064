@@ -267,8 +267,10 @@ The profiling design is:
 
 The profiling scripts are:
 
-- `Assignment 2/profile_part_b_cusparse.pbs`
-- `Assignment 2/profile_part_b_cublas.pbs`
+- **Linux (PBS):** `Assignment 2/profiling_linux/profile_part_b_cusparse.pbs`, `profiling_linux/profile_part_b_cublas.pbs`
+- **Windows (PowerShell):** `Assignment 2/profiling_windows/profile_part_b_cusparse.ps1`, `profiling_windows/profile_part_b_cublas.ps1`
+
+See `profiling_windows/STEPS.md` for Windows (Developer PowerShell, execution policy, GPU counter permissions). On Windows the driver uses C++17 `std::filesystem` for snapshot directory creation by default; the code supports POSIX `mkdir` on Linux and can be overridden with `-DPART_B_USE_POSIX_MKDIR` / `-DPART_B_USE_WINDOWS_FILESYSTEM` if needed.
 
 The current `ncu` settings are:
 
@@ -278,15 +280,12 @@ The current `ncu` settings are:
 
 The longer launch window for Part B is intentional because the library call plus the custom update kernel may involve multiple device launches per timestep, so capturing a short launch range is more reliable than assuming one launch per iteration.
 
-Each profiling PBS script now runs in checkpoints to make failures diagnosable:
+Each profiling script (PBS or PowerShell) runs in checkpoints to make failures diagnosable:
 
-- enable shell tracing with `set -euxo pipefail`
-- verify `ncu` availability with `which ncu` and `ncu --version`
-- compile the profiling binary
-- run the binary once without `ncu` and save a plain-run log
-- run a lightweight `ncu` smoke test with `--target-processes application-only --launch-count 1`, bounded by `timeout 120s`, and save an `ncu` smoke log
-- only then run the final exported `ncu` command
-- bound the final exported command with `timeout 900s`, save a final `ncu` log, and print exit codes for both the smoke test and the final profile run
+- **Linux PBS:** enable shell tracing (`set -euxo pipefail`), verify `ncu` with `which ncu` and `ncu --version`, compile the profiling binary, run once without `ncu` (plain-run log), run `ncu` smoke test (`--target-processes application-only --launch-count 1`, `timeout 120s`), then run the final export (e.g. `timeout 900s` for Part B), saving smoke and final logs.
+- **Windows PowerShell:** same sequence; compile requires a Developer PowerShell (or VS dev environment) so `cl.exe` is on PATH; use `--force-overwrite` (flag only) for `ncu` export. Run as Administrator if needed for GPU counters (ERR_NVGPUCTRPERM).
+
+Profiling outputs can be stored under `Results/Profiling/` (`.ncu-rep`, plain logs) and `Results/Debugging Logs/` (Ncu smoke and final logs).
 
 This staged workflow makes it possible to distinguish between:
 
@@ -350,10 +349,11 @@ This updated plan matches the current implementation:
 
 - standalone `part_b_wave.cu`
 - both `cuSPARSE` and `cuBLAS` backends
-- fixed hardcoded experiment lists
-- compile-time profiling modes for representative `cuSPARSE` and `cuBLAS` Nsight Compute runs
-- structured `DEVICE`/`CONFIG`/`MEASURE`/`SETUP`/`RESULT` output
-- `SKIP` handling for dense cases
-- CSV snapshot export enabled only for the representative `B1_cusparse`, `L = 1.0` run
+- fixed hardcoded experiment lists (`kCuSparseLengths`, `kCuBlasLengths`)
+- compile-time profiling modes (`PART_B_PROFILE_MODE=1` cuSPARSE, `=2` cuBLAS) for representative Nsight Compute runs
+- structured `DEVICE`/`CONFIG`/`VISUALIZATION`/`MEASURE`/`SETUP`/`RESULT` output
+- `SKIP` handling for dense cases that exceed the memory budget
+- CSV snapshot export enabled only for the representative `B1_cusparse`, `L = 1.0` run; snapshot directory configurable (`kSnapshotDir`); portable directory creation (Windows: C++17 filesystem, Linux: POSIX `mkdir`, with optional overrides)
+- profiling scripts in `profiling_linux/` (PBS) and `profiling_windows/` (PowerShell); results under `Results/Profiling/` and `Results/Debugging Logs/`
 - no automatic in-program Part A comparison yet
 

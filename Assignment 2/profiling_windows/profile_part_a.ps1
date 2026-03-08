@@ -21,6 +21,6 @@ Write-Host "[5/6] Nsight Compute smoke (LaunchStats, 1 launch)"
 & ncu --section LaunchStats --target-processes application-only --launch-count 1 .\part_a_wave_profile.exe 2>&1 | Tee-Object -FilePath part_a_profile_ncu_smoke.log
 
 Write-Host "[6/6] Exporting final Part A report (.ncu-rep)"
-& ncu --set speedOfLight --section LaunchStats --target-processes application-only --launch-skip 10 --launch-count 1 --force-overwrite true --export part_a_profile .\part_a_wave_profile.exe 2>&1 | Tee-Object -FilePath part_a_profile_ncu_final.log
+& ncu --set speedOfLight --section LaunchStats --target-processes application-only --launch-skip 10 --launch-count 1 --force-overwrite --export part_a_profile .\part_a_wave_profile.exe 2>&1 | Tee-Object -FilePath part_a_profile_ncu_final.log
 
 Write-Host "Done. Report: part_a_profile.ncu-rep"

@@ -1,0 +1,255 @@
+PS C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2> .\profiling_windows\profile_part_a.ps1
+[1/6] Project root: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2
+[2/6] Checking nvcc and ncu
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Tue_Dec_16_19:27:18_Pacific_Standard_Time_2025
+Cuda compilation tools, release 13.1, V13.1.115
+Build cuda_13.1.r13.1/compiler.37061995_0
+NVIDIA (R) Nsight Compute Command Line Profiler
+Copyright (c) 2018-2025 NVIDIA Corporation
+Version 2025.4.1.0 (build 37053803) (public-release)
+[3/6] Compiling Part A profiling binary
+part_a_wave.cu
+tmpxft_000024c8_00000000-7_part_a_wave.cudafe1.cpp
+
+
+    Directory: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          3/8/2026   7:48 AM         219136 part_a_wave_profile.exe
+[4/6] Plain execution sanity check
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536
+PROFILE mode=part_a representative_kernel=A1_global representative_length=8.00 representative_block=32x8
+CONFIG steps=1000 run_global=1 run_shared=0 benchmark_blocks=0 lengths=8.00 blocks=32x8
+SETUP length=8.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=801 ny=801 steps=1000
+RESULT kernel=A1_global block=32x8 length=8.00 nx=801 ny=801 steps=1000 kernel_ms_total=58.204159 kernel_ms_step=0.058204 sim_ms_total=63.348800 bandwidth_GBps=526.478668 occupancy_pct=100.00 active_blocks_per_sm=4 checksum=-1.962235528143e-11 max_error=0.000000000000e+00
+[5/6] Nsight Compute smoke (LaunchStats, 1 launch)
+==PROF== Connected to process 20236 (C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_a_wave_profile.exe)
+==PROF== Profiling "wave_step_global" - 0 (1/1): 0%....50%....100% - 1 pass
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536
+PROFILE mode=part_a representative_kernel=A1_global representative_length=8.00 representative_block=32x8
+CONFIG steps=1000 run_global=1 run_shared=0 benchmark_blocks=0 lengths=8.00 blocks=32x8
+SETUP length=8.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=801 ny=801 steps=1000
+RESULT kernel=A1_global block=32x8 length=8.00 nx=801 ny=801 steps=1000 kernel_ms_total=222.651169 kernel_ms_step=0.222651 sim_ms_total=299.116600 bandwidth_GBps=137.628956 occupancy_pct=100.00 active_blocks_per_sm=4 checksum=-1.962235528143e-11 max_error=0.000000000000e+00
+==PROF== Disconnected from process 20236
+[20236] part_a_wave_profile.exe@127.0.0.1
+  <unnamed>::wave_step_global(const double *, const double *, double *, int, int, double) (26, 101, 1)x(32, 8, 1), Context 1, Stream 7, Device 0, CC 7.5
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   256
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                  2,626
+    Registers Per Thread             register/thread              22
+    Shared Memory Configuration Size           Kbyte           32.77
+    Driver Shared Memory Per Block        byte/block               0
+    Dynamic Shared Memory Per Block       byte/block               0
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM              34
+    Stack Size                                                 1,024
+    Threads                                   thread         672,256
+    # TPCs                                                        17
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                               19.31
+    -------------------------------- --------------- ---------------
+
+[6/6] Exporting final Part A report (.ncu-rep)
+==PROF== Connected to process 20120 (C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_a_wave_profile.exe)
+==PROF== Profiling "wave_step_global" - 0 (1/1): 0%....50%....100% - 1 pass
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536
+PROFILE mode=part_a representative_kernel=A1_global representative_length=8.00 representative_block=32x8
+CONFIG steps=1000 run_global=1 run_shared=0 benchmark_blocks=0 lengths=8.00 blocks=32x8
+SETUP length=8.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=801 ny=801 steps=1000
+RESULT kernel=A1_global block=32x8 length=8.00 nx=801 ny=801 steps=1000 kernel_ms_total=225.233536 kernel_ms_step=0.225234 sim_ms_total=295.352500 bandwidth_GBps=136.051001 occupancy_pct=100.00 active_blocks_per_sm=4 checksum=-1.962235528143e-11 max_error=0.000000000000e+00
+==PROF== Disconnected from process 20120
+==PROF== Report: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_a_profile.ncu-rep
+Done. Report: part_a_profile.ncu-rep
+
+
+PS C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2> .\profiling_windows\profile_part_b_cusparse.ps1
+[1/6] Project root: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2
+[2/6] Checking nvcc and ncu
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Tue_Dec_16_19:27:18_Pacific_Standard_Time_2025
+Cuda compilation tools, release 13.1, V13.1.115
+Build cuda_13.1.r13.1/compiler.37061995_0
+NVIDIA (R) Nsight Compute Command Line Profiler
+Copyright (c) 2018-2025 NVIDIA Corporation
+Version 2025.4.1.0 (build 37053803) (public-release)
+[3/6] Compiling Part B cuSPARSE profiling binary
+part_b_wave.cu
+tmpxft_00004fdc_00000000-7_part_b_wave.cudafe1.cpp
+
+
+    Directory: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          3/8/2026   7:50 AM         349184 part_b_wave_profile_cusparse.exe
+[4/6] Plain execution sanity check
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536 total_global_mem=8589606912
+PROFILE mode=part_b representative_backend=B1_cusparse representative_length=8.00
+CONFIG steps=1000 run_cusparse=1 run_cublas=0 export_snapshots=0 dense_max_gb=20.00 cusparse_lengths=8.00 cublas_lengths=1.00,2.00
+VISUALIZATION export_backend=B1_cusparse export_length=1.00 snapshot_dir=part_b_snapshots
+MEASURE bytes_per_update=48 update_block=32x8
+SETUP backend=B1_cusparse length=8.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=801 ny=801 steps=1000
+RESULT backend=B1_cusparse length=8.00 nx=801 ny=801 steps=1000 gpu_ms_total=298.743103 gpu_ms_step=0.298743 library_ms_total=207.747498 library_ms_step=0.207748 sim_ms_total=316.713100 bandwidth_GBps=102.573909 update_occupancy_pct=100.00 active_blocks_per_sm=4 checksum=2.270905762698e-10 max_error=-1.000000000000e+00 note=none
+[5/6] Nsight Compute smoke (LaunchStats, 1 launch)
+==PROF== Connected to process 16060 (C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_b_wave_profile_cusparse.exe)
+==PROF== Profiling "csr_partition_kernel" - 0 (1/1): 0%....50%....100% - 1 pass
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536 total_global_mem=8589606912
+PROFILE mode=part_b representative_backend=B1_cusparse representative_length=8.00
+CONFIG steps=1000 run_cusparse=1 run_cublas=0 export_snapshots=0 dense_max_gb=20.00 cusparse_lengths=8.00 cublas_lengths=1.00,2.00
+VISUALIZATION export_backend=B1_cusparse export_length=1.00 snapshot_dir=part_b_snapshots
+MEASURE bytes_per_update=48 update_block=32x8
+SETUP backend=B1_cusparse length=8.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=801 ny=801 steps=1000
+RESULT backend=B1_cusparse length=8.00 nx=801 ny=801 steps=1000 gpu_ms_total=698.039124 gpu_ms_step=0.698039 library_ms_total=464.770111 library_ms_step=0.464770 sim_ms_total=716.701000 bandwidth_GBps=43.899041 update_occupancy_pct=100.00 active_blocks_per_sm=4 checksum=2.270905762698e-10 max_error=-1.000000000000e+00 note=none
+==PROF== Disconnected from process 16060
+[16060] part_b_wave_profile_cusparse.exe@127.0.0.1
+  void unnamed>::csr_partition_kernel<int, int>(const T1 *, T2, T1, T1, T2, long long, T2 *, T2) (33, 1, 1)x(256, 1, 1), Context 1, Stream 7, Device 0, CC 7.5
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   256
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                     33
+    Registers Per Thread             register/thread              22
+    Shared Memory Configuration Size           Kbyte           32.77
+    Driver Shared Memory Per Block        byte/block               0
+    Dynamic Shared Memory Per Block       byte/block               0
+    Static Shared Memory Per Block        byte/block               0
+    # SMs                                         SM              34
+    Stack Size                                                 1,024
+    Threads                                   thread           8,448
+    # TPCs                                                        17
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                                0.24
+    -------------------------------- --------------- ---------------
+
+    OPT   Est. Speedup: 2.941%
+          The grid for this launch is configured to execute only 33 blocks, which is less than the 34 multiprocessors
+          used. This can underutilize some multiprocessors. If you do not intend to execute this kernel concurrently
+          with other workloads, consider reducing the block size to have at least one block per multiprocessor or
+          increase the size of the grid to fully utilize the available hardware resources. See the Hardware Model
+          (https://docs.nvidia.com/nsight-compute/ProfilingGuide/index.html#metrics-hw-model) description for more
+          details on launch configurations.
+
+[6/6] Exporting final Part B cuSPARSE report (.ncu-rep)
+==PROF== Connected to process 7200 (C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_b_wave_profile_cusparse.exe)
+==PROF== Profiling "update_from_laplacian" - 0 (1/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "csr_partition_kernel" - 1 (2/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "csrmv_v3_kernel" - 2 (3/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "update_from_laplacian" - 3 (4/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "csr_partition_kernel" - 4 (5/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "csrmv_v3_kernel" - 5 (6/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "update_from_laplacian" - 6 (7/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "csr_partition_kernel" - 7 (8/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "csrmv_v3_kernel" - 8 (9/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "update_from_laplacian" - 9 (10/10): 0%....50%....100% - 1 pass
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536 total_global_mem=8589606912
+PROFILE mode=part_b representative_backend=B1_cusparse representative_length=8.00
+CONFIG steps=1000 run_cusparse=1 run_cublas=0 export_snapshots=0 dense_max_gb=20.00 cusparse_lengths=8.00 cublas_lengths=1.00,2.00
+VISUALIZATION export_backend=B1_cusparse export_length=1.00 snapshot_dir=part_b_snapshots
+MEASURE bytes_per_update=48 update_block=32x8
+SETUP backend=B1_cusparse length=8.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=801 ny=801 steps=1000
+RESULT backend=B1_cusparse length=8.00 nx=801 ny=801 steps=1000 gpu_ms_total=934.188049 gpu_ms_step=0.934188 library_ms_total=383.108521 library_ms_step=0.383109 sim_ms_total=951.757300 bandwidth_GBps=32.802012 update_occupancy_pct=100.00 active_blocks_per_sm=4 checksum=2.270905762698e-10 max_error=-1.000000000000e+00 note=none
+==PROF== Disconnected from process 7200
+==PROF== Report: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_b_cusparse_profile.ncu-rep
+Done. Report: part_b_cusparse_profile.ncu-rep
+
+
+PS C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2> .\profiling_windows\profile_part_b_cublas.ps1
+[1/6] Project root: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2
+[2/6] Checking nvcc and ncu
+nvcc: NVIDIA (R) Cuda compiler driver
+Copyright (c) 2005-2025 NVIDIA Corporation
+Built on Tue_Dec_16_19:27:18_Pacific_Standard_Time_2025
+Cuda compilation tools, release 13.1, V13.1.115
+Build cuda_13.1.r13.1/compiler.37061995_0
+NVIDIA (R) Nsight Compute Command Line Profiler
+Copyright (c) 2018-2025 NVIDIA Corporation
+Version 2025.4.1.0 (build 37053803) (public-release)
+[3/6] Compiling Part B cuBLAS profiling binary
+part_b_wave.cu
+tmpxft_00004638_00000000-7_part_b_wave.cudafe1.cpp
+
+
+    Directory: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2
+
+
+Mode                 LastWriteTime         Length Name
+----                 -------------         ------ ----
+-a----          3/8/2026   7:50 AM         346112 part_b_wave_profile_cublas.exe
+[4/6] Plain execution sanity check
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536 total_global_mem=8589606912
+PROFILE mode=part_b representative_backend=B2_cublas representative_length=1.00
+CONFIG steps=1000 run_cusparse=1 run_cublas=0 export_snapshots=0 dense_max_gb=20.00 cusparse_lengths=1.00,2.00,4.00,8.00 cublas_lengths=1.00
+VISUALIZATION export_backend=B1_cusparse export_length=1.00 snapshot_dir=part_b_snapshots
+MEASURE bytes_per_update=48 update_block=32x8
+SETUP backend=B2_cublas length=1.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=101 ny=101 steps=1000
+RESULT backend=B2_cublas length=1.00 nx=101 ny=101 steps=1000 gpu_ms_total=2328.615479 gpu_ms_step=2.328615 library_ms_total=2272.169678 library_ms_step=2.272170 sim_ms_total=2597.264400 bandwidth_GBps=0.202029 update_occupancy_pct=100.00 active_blocks_per_sm=4 checksum=-3.932121435635e+03 max_error=-1.000000000000e+00 note=none
+[5/6] Nsight Compute smoke (LaunchStats, 1 launch)
+==PROF== Connected to process 21016 (C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_b_wave_profile_cublas.exe)
+==PROF== Profiling "gemv2N_kernel" - 0 (1/1): 0%....50%....100% - 1 pass
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536 total_global_mem=8589606912
+PROFILE mode=part_b representative_backend=B2_cublas representative_length=1.00
+CONFIG steps=1000 run_cusparse=0 run_cublas=1 export_snapshots=0 dense_max_gb=20.00 cusparse_lengths=1.00,2.00,4.00,8.00 cublas_lengths=1.00
+VISUALIZATION export_backend=B1_cusparse export_length=1.00 snapshot_dir=part_b_snapshots
+MEASURE bytes_per_update=48 update_block=32x8
+SETUP backend=B2_cublas length=1.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=101 ny=101 steps=1000
+RESULT backend=B2_cublas length=1.00 nx=101 ny=101 steps=1000 gpu_ms_total=2708.004639 gpu_ms_step=2.708005 library_ms_total=2494.398193 library_ms_step=2.494398 sim_ms_total=2937.278000 bandwidth_GBps=0.173725 update_occupancy_pct=100.00 active_blocks_per_sm=4 checksum=-3.932121435635e+03 max_error=-1.000000000000e+00 note=none
+==PROF== Disconnected from process 21016
+[21016] part_b_wave_profile_cublas.exe@127.0.0.1
+  void gemv2N_kernel<int, int, double, double, double, double, 128, 8, 4, 4, 1, 0, cublasGemvParamsEx<int, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<const double>, cublasGemvTensorStridedBatched<double>, double>>(T13) (638, 1, 34)x(128, 1, 1), Context 1, Stream 7, Device 0, CC 7.5
+    Section: Launch Statistics
+    -------------------------------- --------------- ---------------
+    Metric Name                          Metric Unit    Metric Value
+    -------------------------------- --------------- ---------------
+    Block Size                                                   128
+    Function Cache Configuration                     CachePreferNone
+    Grid Size                                                 21,692
+    Registers Per Thread             register/thread              58
+    Shared Memory Configuration Size           Kbyte           65.54
+    Driver Shared Memory Per Block        byte/block               0
+    Dynamic Shared Memory Per Block       byte/block               0
+    Static Shared Memory Per Block       Kbyte/block            5.12
+    # SMs                                         SM              34
+    Stack Size                                                 1,024
+    Threads                                   thread       2,776,576
+    # TPCs                                                        17
+    Enabled TPC IDs                                              all
+    Uses Green Context                                             0
+    Waves Per SM                                               79.75
+    -------------------------------- --------------- ---------------
+
+[6/6] Exporting final Part B cuBLAS report (.ncu-rep)
+==PROF== Connected to process 20376 (C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_b_wave_profile_cublas.exe)
+==PROF== Profiling "update_from_laplacian" - 0 (1/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "gemv2N_kernel" - 1 (2/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "splitKreduce_kernel" - 2 (3/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "update_from_laplacian" - 3 (4/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "gemv2N_kernel" - 4 (5/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "splitKreduce_kernel" - 5 (6/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "update_from_laplacian" - 6 (7/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "gemv2N_kernel" - 7 (8/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "splitKreduce_kernel" - 8 (9/10): 0%....50%....100% - 1 pass
+==PROF== Profiling "update_from_laplacian" - 9 (10/10): 0%....50%....100% - 1 pass
+DEVICE name="NVIDIA GeForce RTX 2060 SUPER" sm_count=34 warp_size=32 max_threads_per_sm=1024 shared_mem_per_sm=65536 total_global_mem=8589606912
+PROFILE mode=part_b representative_backend=B2_cublas representative_length=1.00
+CONFIG steps=1000 run_cusparse=0 run_cublas=1 export_snapshots=0 dense_max_gb=20.00 cusparse_lengths=1.00,2.00,4.00,8.00 cublas_lengths=1.00
+VISUALIZATION export_backend=B1_cusparse export_length=1.00 snapshot_dir=part_b_snapshots
+MEASURE bytes_per_update=48 update_block=32x8
+SETUP backend=B2_cublas length=1.00 dx=0.01000 dy=0.01000 dt=0.00500 c=1.00 lambda=0.500000 lambda2=0.250000 nx=101 ny=101 steps=1000
+RESULT backend=B2_cublas length=1.00 nx=101 ny=101 steps=1000 gpu_ms_total=2914.020020 gpu_ms_step=2.914020 library_ms_total=2406.634766 library_ms_step=2.406635 sim_ms_total=3109.414400 bandwidth_GBps=0.161443 update_occupancy_pct=100.00 active_blocks_per_sm=4 checksum=-3.932121435635e+03 max_error=-1.000000000000e+00 note=none
+==PROF== Disconnected from process 20376
+==PROF== Report: C:\Users\Ava Vispilio\Documents\GitHub\SC4064\Assignment 2\part_b_cublas_profile.ncu-rep
+Done. Report: part_b_cublas_profile.ncu-rep

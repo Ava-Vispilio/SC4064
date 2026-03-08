@@ -15,9 +15,21 @@
 #include <limits>
 #include <new>
 #include <string>
+#include <vector>
+
+// Directory creation: Windows (C++17 filesystem) vs POSIX (mkdir).
+// Default: _WIN32 -> filesystem; otherwise -> POSIX mkdir.
+// Override: -DPART_B_USE_POSIX_MKDIR to use mkdir on Windows;
+//           -DPART_B_USE_WINDOWS_FILESYSTEM to use filesystem on Linux.
+#if defined(PART_B_USE_POSIX_MKDIR) || (!defined(_WIN32) && !defined(PART_B_USE_WINDOWS_FILESYSTEM))
+/* POSIX path (Linux, or Windows with -DPART_B_USE_POSIX_MKDIR) */
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <vector>
+#else
+/* Windows / C++17 filesystem (default on Windows, or Linux with -DPART_B_USE_WINDOWS_FILESYSTEM) */
+#include <system_error>
+#include <filesystem>
+#endif
 
 #define CUDA_CHECK(call) do { \
     cudaError_t err__ = (call); \
@@ -250,31 +262,37 @@ void ensure_directory_exists(const std::string &path) {
     if (path.empty()) {
         return;
     }
-
+#if defined(PART_B_USE_POSIX_MKDIR) || (!defined(_WIN32) && !defined(PART_B_USE_WINDOWS_FILESYSTEM))
+    /* POSIX: create each path component with mkdir(..., 0755) */
     std::string partial;
     partial.reserve(path.size());
     for (size_t i = 0; i < path.size(); ++i) {
         const char ch = path[i];
         partial.push_back(ch);
-
         const bool at_separator = (ch == '/');
         const bool at_end = (i + 1 == path.size());
         if (!at_separator && !at_end) {
             continue;
         }
-
         while (partial.size() > 1 && partial.back() == '/') {
             partial.pop_back();
         }
         if (partial.empty()) {
             continue;
         }
-
         if (mkdir(partial.c_str(), 0755) != 0 && errno != EEXIST) {
             fprintf(stderr, "Failed to create directory '%s': %s\n", partial.c_str(), std::strerror(errno));
             std::exit(EXIT_FAILURE);
         }
     }
+#else
+    /* Windows / C++17 filesystem: create_directories(path) */
+    std::error_code ec;
+    if (!std::filesystem::create_directories(path, ec) && ec) {
+        fprintf(stderr, "Failed to create directory '%s': %s\n", path.c_str(), ec.message().c_str());
+        std::exit(EXIT_FAILURE);
+    }
+#endif
 }
 
 std::vector<int> build_snapshot_steps(int steps) {

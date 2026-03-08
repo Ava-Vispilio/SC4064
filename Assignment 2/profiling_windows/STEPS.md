@@ -81,6 +81,22 @@ Open the `.ncu-rep` files in the Nsight Compute GUI (File → Open) for detailed
 
 ---
 
+## Optional: Part B directory creation (POSIX vs Windows)
+
+Part B creates snapshot directories. The code in `part_b_wave.cu` supports two paths:
+
+- **Windows (default on _WIN32):** C++17 `std::filesystem::create_directories` — no extra flags.
+- **POSIX (default on Linux):** `mkdir(..., 0755)` — requires `sys/stat.h` / `sys/types.h`.
+
+To override the default (e.g. build for the other OS or use the other implementation), pass one of these to `nvcc` when compiling Part B:
+
+- **Use POSIX `mkdir` on Windows:** add `-DPART_B_USE_POSIX_MKDIR` to the Part B compile line in the script (e.g. in `profile_part_b_cusparse.ps1` / `profile_part_b_cublas.ps1`).
+- **Use C++17 filesystem on Linux:** add `-DPART_B_USE_WINDOWS_FILESYSTEM` to the Part B compile line in your Linux build/Makefile.
+
+You can edit the scripts or Makefile to add the define so the chosen OS path is used.
+
+---
+
 ## Optional: Run from the profiling_windows folder
 
 If you prefer to run from inside `profiling_windows`, use the parent directory when calling the script so the script still finds the sources:

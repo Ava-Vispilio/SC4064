@@ -67,7 +67,7 @@ For each experiment, it prints structured lines:
 
 This matches the current execution flow used by the PBS script and logs.
 
-The driver now also contains a compile-time profiling mode used by `Assignment 2/profile_part_a.pbs`. In that mode it runs just one representative case:
+The driver now also contains a compile-time profiling mode used by the profiling scripts (`profiling_linux/profile_part_a.pbs` or `profiling_windows/profile_part_a.ps1`). In that mode it runs just one representative case:
 
 - kernel: `A1_global`
 - block size: `32x8`
@@ -232,7 +232,7 @@ Halo overhead for the tiled kernel is still:
 - `16x16`: `18x18 / 256 = 1.265625`
 - `32x8`: `34x10 / 256 = 1.328125`
 
-So the reasoning is unchanged: `16x16` is the best paper choice, but the final justification should come from the measured `RESULT` lines in `Part_A.log`.
+So the reasoning is unchanged: `16x16` is the best paper choice, but the final justification should come from the measured `RESULT` lines in the run logs (e.g. `Results/Part A Run *.log`) or the profiling plain log (`Results/Profiling/part_a_profile_plain.log`).
 
 ## Metrics And Output To Use In The Report
 
@@ -272,15 +272,12 @@ The profiling design is:
 - let Nsight Compute skip the first `10` kernel launches and capture the next `1` launch
 - do not use runtime `cudaProfilerStart()` / `cudaProfilerStop()` gating in the code path
 
-This is implemented through the dedicated PBS script `Assignment 2/profile_part_a.pbs`, which now performs the profiling run in checkpoints:
+This is implemented through dedicated profiling scripts for Linux and Windows:
 
-- enable shell tracing with `set -euxo pipefail`
-- verify `ncu` availability with `which ncu` and `ncu --version`
-- compile the profiling binary
-- run the binary once without `ncu` and save `part_a_profile_plain.log`
-- run a lightweight `ncu` smoke test with `--target-processes application-only --launch-count 1`, bounded by `timeout 120s`, and save `part_a_profile_ncu_smoke.log`
-- finally export the report with `--launch-skip 10 --launch-count 1`
-- bound the final export command with `timeout 600s`, save `part_a_profile_ncu_final.log`, and print both smoke-test and final-command exit codes
+- **Linux (PBS):** `Assignment 2/profiling_linux/profile_part_a.pbs` runs on a cluster with `ncu` available. It enables shell tracing (`set -euxo pipefail`), verifies `ncu` with `which ncu` and `ncu --version`, compiles the profiling binary, runs the binary once without `ncu` (saving `part_a_profile_plain.log`), runs a lightweight `ncu` smoke test (`--target-processes application-only --launch-count 1`, `timeout 120s`, saving `part_a_profile_ncu_smoke.log`), then exports the report with `--launch-skip 10 --launch-count 1` (bounded by `timeout 600s`, saving `part_a_profile_ncu_final.log`).
+- **Windows (PowerShell):** `Assignment 2/profiling_windows/profile_part_a.ps1` does the same sequence locally: compile, plain run, smoke test, then full export. Run from the Assignment 2 directory (see `profiling_windows/STEPS.md`). On Windows, use a Developer PowerShell or load the VS dev environment so `cl.exe` is on PATH; run as Administrator if needed for GPU counter access (ERR_NVGPUCTRPERM). The script uses `--force-overwrite` (no value) for `ncu` export.
+
+Profiling outputs can be moved into `Assignment 2/Results/Profiling/` (`.ncu-rep` and plain logs) and `Results/Debugging Logs/` (smoke and final Nsight logs). The same representative case (A1_global, 32x8, L=8.0) is used on both platforms.
 
 This staged workflow makes it easier to determine whether a failure comes from compilation, the profiling-mode binary itself, the `ncu` environment, or the final filtered profiling command.
 
@@ -290,8 +287,9 @@ This updated plan matches the current implementation:
 
 - standalone `part_a_wave.cu`
 - automatic sweep over selected domain lengths and block sizes
-- compile-time profiling mode for one representative Nsight Compute run
+- compile-time profiling mode (`PART_A_PROFILE_MODE=1`) for one representative Nsight Compute run
 - A1 used as the per-configuration correctness baseline
 - A2 implemented with cooperative halo loading
-- structured logging intended for later report tables
+- structured logging (DEVICE, CONFIG, SETUP, RESULT) intended for later report tables
+- profiling scripts in `profiling_linux/` (PBS) and `profiling_windows/` (PowerShell); results organized under `Results/Profiling/` and `Results/Debugging Logs/`
 

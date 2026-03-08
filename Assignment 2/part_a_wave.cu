@@ -7,6 +7,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iterator>
+#include <limits>
 #include <string>
 #include <vector>
 
@@ -187,7 +188,7 @@ double compute_checksum(const std::vector<double> &field) {
 
 double compute_max_abs_diff(const std::vector<double> &lhs, const std::vector<double> &rhs) {
     if (lhs.size() != rhs.size()) {
-        return INFINITY;
+        return std::numeric_limits<double>::infinity();
     }
 
     double max_diff = 0.0;
